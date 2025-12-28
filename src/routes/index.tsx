@@ -226,7 +226,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { NewsCard } from '../components/NewsCard'
 import { Footer } from '../components/Footer'
-import { categories } from '../data/mockData'
 import { getArticles } from '../lib/articles.api'
 import type { Article } from '../db/schema'
 
@@ -297,7 +296,7 @@ function HomePage() {
             className="mb-6 sm:mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
           >
             <div className="flex gap-2 sm:gap-3 min-w-max sm:min-w-0 sm:flex-wrap">
-              {categories.map((category) => (
+              {/* {categories.map((category) => (
                 <button
                   key={category.slug}
                   onClick={() =>
@@ -318,7 +317,7 @@ function HomePage() {
                 >
                   {category.name}
                 </button>
-              ))}
+              ))} */}
             </div>
           </div>
 
