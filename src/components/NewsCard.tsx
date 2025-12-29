@@ -28,7 +28,7 @@ export function NewsCard({
         </div>
 
         <h2
-          className="mb-3 text-[#1a1a1a] line-clamp-3 font-serif"
+          className="mb-3 text-[#1a1a1a] line-clamp-3"
           style={{
             fontSize: 'clamp(16px, 3vw, 20px)',
             fontWeight: '700',

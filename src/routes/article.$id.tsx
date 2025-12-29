@@ -115,7 +115,6 @@
 // }
 
 import { createFileRoute } from '@tanstack/react-router'
-import { BackButton } from '../components/BackButton'
 import { CategoryBadge } from '../components/CategoryBadge'
 import { ShareButtons } from '../components/ShareButtons'
 import { Footer } from '../components/Footer'
@@ -181,7 +180,7 @@ function ArticleDetailPage() {
     <div className="bg-white min-h-screen flex flex-col">
       {/* Article Content */}
       <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 flex-1">
-        <BackButton />
+        {/* <BackButton /> */}
 
         {/* Article Header */}
         <header className="mb-6 sm:mb-8">
@@ -193,7 +192,7 @@ function ArticleDetailPage() {
           </div>
 
           <h1
-            className="mb-4 sm:mb-6 text-[#1a1a1a] font-serif"
+            className="mb-4 sm:mb-6 text-[#1a1a1a]"
             style={{
               fontSize: 'clamp(28px, 5vw, 40px)',
               fontWeight: '700',
