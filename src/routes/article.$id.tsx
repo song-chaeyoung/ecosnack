@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { CategoryBadge } from '../components/CategoryBadge'
 import { ShareButtons } from '../components/feature/article/ShareButtons'
 import { Footer } from '../components/Footer'
@@ -17,17 +17,14 @@ import {
 export const Route = createFileRoute('/article/$id')({
   loader: async ({ params }) => {
     const article = await getArticleById({ data: Number(params.id) })
-    if (!article) {
-      throw new Error('Article not found')
-    }
     return { article }
   },
   head: ({ loaderData }) => {
-    if (!loaderData) {
+    if (!loaderData?.article) {
       return {
         meta: getPageMeta({
-          title: SITE_CONFIG.title,
-          description: SITE_CONFIG.description,
+          title: '기사를 찾을 수 없습니다 - ' + SITE_CONFIG.title,
+          description: '요청하신 기사가 존재하지 않습니다.',
           path: '/article',
         }),
       }
@@ -74,8 +71,41 @@ export const Route = createFileRoute('/article/$id')({
   component: ArticleDetailPage,
 })
 
+function ArticleNotFound() {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center p-4 text-center">
+      <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+        <span className="text-4xl">🤔</span>
+      </div>
+      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-3">
+        기사를 찾을 수 없습니다
+      </h2>
+      <p className="text-gray-600 mb-8 max-w-md">
+        요청하신 기사가 삭제되었거나 존재하지 않는 주소입니다.
+        <br />
+        다른 기사를 찾아보시는 건 어떨까요?
+      </p>
+      <Link
+        to="/"
+        className="px-6 py-3 bg-[#1a1a1a] text-white rounded-lg font-medium hover:bg-[#1a1a1a] transition-colors"
+      >
+        홈으로 돌아가기
+      </Link>
+    </div>
+  )
+}
+
 function ArticleDetailPage() {
   const { article } = Route.useLoaderData()
+
+  if (!article) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col">
+        <ArticleNotFound />
+        <Footer />
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white min-h-screen flex flex-col">
