@@ -1,10 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CategoryBadge } from '../components/CategoryBadge'
-import { ShareButtons } from '../components/ShareButtons'
+import { ShareButtons } from '../components/feature/article/ShareButtons'
 import { Footer } from '../components/Footer'
 import { ImpactItem } from '../components/feature/article/ImpactItem'
 import { getArticleById } from '../lib/articles.api'
 import { formatRelativeTime } from '../lib/utils'
+import {
+  getPageMeta,
+  getArticleJsonLd,
+  getBreadcrumbJsonLd,
+  truncateDescription,
+  SITE_CONFIG,
+  CATEGORY_NAMES,
+} from '../lib/seo'
 
 export const Route = createFileRoute('/article/$id')({
   loader: async ({ params }) => {
@@ -13,6 +21,55 @@ export const Route = createFileRoute('/article/$id')({
       throw new Error('Article not found')
     }
     return { article }
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return {
+        meta: getPageMeta({
+          title: SITE_CONFIG.title,
+          description: SITE_CONFIG.description,
+          path: '/article',
+        }),
+      }
+    }
+
+    const { article } = loaderData
+    const categoryName = article.category
+      ? CATEGORY_NAMES[article.category]
+      : '경제'
+    const description = truncateDescription(
+      article.description || article.headlineSummary || article.title,
+    )
+
+    return {
+      meta: getPageMeta({
+        title: article.title,
+        description,
+        path: `/article/${article.id}`,
+        image: article.imageUrl || undefined,
+        type: 'article',
+        publishedTime: article.pubDate?.toISOString(),
+        modifiedTime: article.createdAt?.toISOString(),
+        author: article.source || SITE_CONFIG.name,
+        keywords: article.keywords || [categoryName, '경제뉴스', '뉴스분석'],
+      }),
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(getArticleJsonLd(article)),
+        },
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(
+            getBreadcrumbJsonLd([
+              { name: '홈', url: '/' },
+              { name: categoryName, url: `/?category=${article.category}` },
+              { name: article.title, url: `/article/${article.id}` },
+            ]),
+          ),
+        },
+      ],
+    }
   },
   component: ArticleDetailPage,
 })

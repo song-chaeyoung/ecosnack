@@ -11,6 +11,12 @@ import {
 import type { Article, Category } from '../db/schema'
 import { CategorySchema } from '../db/schema'
 import { formatRelativeTime } from '@/lib/utils'
+import {
+  getPageMeta,
+  getWebsiteJsonLd,
+  getOrganizationJsonLd,
+  SITE_CONFIG,
+} from '../lib/seo'
 
 // 검색 파라미터 타입 정의
 type SearchParams = {
@@ -27,6 +33,26 @@ export const Route = createFileRoute('/')({
       category: validCategories.includes(category as Category)
         ? (category as Category)
         : undefined,
+    }
+  },
+  head: () => {
+    return {
+      meta: getPageMeta({
+        title: SITE_CONFIG.title,
+        description: SITE_CONFIG.description,
+        path: '/',
+        keywords: ['경제', '금융', '비즈니스', '시장', '정책', '무역'],
+      }),
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(getWebsiteJsonLd()),
+        },
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(getOrganizationJsonLd()),
+        },
+      ],
     }
   },
   loader: async () => {
@@ -113,7 +139,7 @@ function HomePage() {
                   category={article.category || '기타'}
                   headline={article.title}
                   summary={article.description || article.headlineSummary || ''}
-                  source={article.source || '출처 없음'}
+                  source={article.source || ''}
                   timestamp={formatRelativeTime(article.pubDate)}
                   imageUrl={article.imageUrl || ''}
                 />
