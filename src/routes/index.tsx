@@ -99,7 +99,7 @@ function HomePage() {
           />
 
           {/* News Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* 로딩 스켈레톤으로 수정 예정 */}
             {isLoading ? (
               <div className="col-span-full text-center py-12 text-gray-500 h-[calc(100vh-200px)] flex items-center justify-center">
@@ -115,6 +115,7 @@ function HomePage() {
                   summary={article.description || article.headlineSummary || ''}
                   source={article.source || '출처 없음'}
                   timestamp={formatRelativeTime(article.pubDate)}
+                  imageUrl={article.imageUrl || ''}
                 />
               ))
             )}

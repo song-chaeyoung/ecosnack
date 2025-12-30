@@ -8,6 +8,7 @@ interface NewsCardProps {
   summary: string
   source: string
   timestamp: string
+  imageUrl: string
 }
 
 export function NewsCard({
@@ -17,13 +18,22 @@ export function NewsCard({
   summary,
   source,
   timestamp,
+  imageUrl,
 }: NewsCardProps) {
   return (
     <Link to={`/article/$id`} params={{ id: String(id) }}>
-      <article className="bg-white border border-[#e5e5e5] p-4 sm:p-6 rounded-sm transition-all cursor-pointer">
+      <article className="bg-white border border-[#e5e5e5] p-4 sm:p-6 rounded-sm transition-all duration-300 ease-in-out cursor-pointer hover:scale-[1.02] hover:shadow-xl origin-center">
         <div className="mb-3">
           <CategoryBadge category={category} />
         </div>
+
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={headline}
+            className="w-full object-cover mb-3"
+          />
+        )}
 
         <h2
           className="mb-3 text-[#1a1a1a] line-clamp-3"
