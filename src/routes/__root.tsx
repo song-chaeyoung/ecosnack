@@ -39,6 +39,13 @@ export const Route = createRootRoute({
         href: SITE_CONFIG.url,
       },
     ],
+    scripts: [
+      {
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7913636156841478',
+        async: true,
+        crossOrigin: 'anonymous',
+      },
+    ],
   }),
 
   shellComponent: RootDocument,
