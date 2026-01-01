@@ -1,10 +1,8 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { CategoryBadge } from '../components/CategoryBadge'
-import { ShareButtons } from '../components/feature/article/ShareButtons'
+import { ArticleHeader } from '../components/feature/article/ArticleHeader'
 import { Footer } from '../components/Footer'
 import { ImpactItem } from '../components/feature/article/ImpactItem'
 import { getArticleById } from '../lib/articles.api'
-import { formatRelativeTime } from '../lib/utils'
 import {
   CATEGORY_NAMES,
   SITE_CONFIG,
@@ -118,73 +116,7 @@ function ArticleDetailPage() {
       {/* Article Content */}
       <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 flex-1">
         {/* Article Header */}
-        <header className="mb-6 sm:mb-8">
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <CategoryBadge category={article.category || ''} />
-
-            {/* Region Badge */}
-            {article.region && (
-              <span className="px-3 py-1 bg-bg-secondary text-text-secondary rounded-full text-sm font-medium">
-                📍 {article.region}
-              </span>
-            )}
-          </div>
-
-          <h1
-            className="mb-4 sm:mb-6 text-text-primary"
-            style={{
-              fontSize: 'clamp(28px, 5vw, 40px)',
-              fontWeight: '700',
-              lineHeight: '1.2',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {article.title}
-          </h1>
-
-          <p
-            className="mb-6 text-text-secondary"
-            style={{
-              fontSize: 'clamp(16px, 3vw, 18px)',
-              lineHeight: '1.6',
-            }}
-          >
-            {article.headlineSummary || article.description || ''}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 pb-6 border-b border-bg-tertiary">
-            <div
-              className="flex items-center gap-2 text-text-tertiary"
-              style={{ fontSize: '14px' }}
-            >
-              <span>{article.source || '출처 없음'}</span>
-            </div>
-            <div
-              className="flex items-center gap-2 text-text-tertiary"
-              style={{ fontSize: '14px' }}
-            >
-              {/* <Clock className="w-4 h-4" />
-              <span>{calculateReadTime(article)} 분량</span>
-              <span>·</span> */}
-              <span suppressHydrationWarning>
-                {formatRelativeTime(article.pubDate)}
-              </span>
-              {article.importanceScore && (
-                <>
-                  <span>·</span>
-                  <span className="flex items-center gap-1">
-                    {'⭐'.repeat(
-                      Math.min(Math.ceil(article.importanceScore / 2), 5),
-                    )}
-                  </span>
-                </>
-              )}
-            </div>
-            <div className="ml-auto">
-              <ShareButtons />
-            </div>
-          </div>
-        </header>
+        <ArticleHeader article={article} />
 
         {/* Article Body */}
         <div className="article-content">
@@ -194,20 +126,13 @@ function ArticleDetailPage() {
               <img
                 src={article.imageUrl}
                 alt={article.title}
-                className="w-full h-auto object-cover"
-                style={{ maxHeight: '400px' }}
+                className="w-full h-auto object-cover max-h-[400px]"
               />
             </div>
           )}
           {/* Main Description */}
           {article.description && (
-            <p
-              className="text-text-primary"
-              style={{
-                fontSize: 'clamp(16px, 2.5vw, 18px)',
-                lineHeight: '1.8',
-              }}
-            >
+            <p className="text-text-primary text-responsive-base leading-relaxed">
               {article.description}
             </p>
           )}
@@ -218,8 +143,7 @@ function ArticleDetailPage() {
                 href={article.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-link hover:underline"
-                style={{ fontSize: '15px', fontWeight: '500' }}
+                className="inline-flex items-center gap-2 text-link hover:underline text-responsive-sm font-medium"
               >
                 원문 보기 →
               </a>
@@ -235,14 +159,11 @@ function ArticleDetailPage() {
                   <div className="bg-amber-100 text-amber-600 w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0">
                     🤔
                   </div>
-                  <h3 className="text-lg font-semibold text-text-primary pt-1.5">
+                  <h3 className="text-lg font-semibold text-text-primary pt-1.5 text-responsive-lg">
                     So What?
                   </h3>
                 </div>
-                <p
-                  className="text-text-primary leading-relaxed"
-                  style={{ fontSize: '16px', lineHeight: '1.7' }}
-                >
+                <p className="text-text-primary leading-relaxed text-responsive-base">
                   {article.soWhat.main_point}
                 </p>
               </div>
@@ -255,10 +176,7 @@ function ArticleDetailPage() {
                     <span className="text-amber-600">📈</span>
                     시장 시그널
                   </h4>
-                  <p
-                    className="text-text-secondary leading-relaxed"
-                    style={{ fontSize: '15px' }}
-                  >
+                  <p className="text-text-secondary leading-relaxed text-responsive-sm">
                     {article.soWhat.market_signal}
                   </p>
                 </div>
@@ -324,14 +242,11 @@ function ArticleDetailPage() {
                   <div className="bg-slate-100 text-slate-600 w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0">
                     📚
                   </div>
-                  <h3 className="text-lg font-semibold text-text-primary pt-1.5">
+                  <h3 className="text-lg font-semibold text-text-primary pt-1.5 text-responsive-lg">
                     배경 정보
                   </h3>
                 </div>
-                <p
-                  className="text-text-secondary leading-relaxed"
-                  style={{ fontSize: '15px', lineHeight: '1.7' }}
-                >
+                <p className="text-text-secondary text-responsive-base leading-relaxed">
                   {article.relatedContext.background}
                 </p>
               </div>
@@ -341,8 +256,7 @@ function ArticleDetailPage() {
                 {/* Related Events */}
                 {article.relatedContext.related_events.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-semibold mb-2.5 text-text-primary flex items-center gap-2">
-                      {/* <span className="text-slate-600">🔗</span> */}
+                    <h4 className="text-sm font-semibold mb-2.5 text-text-primary flex items-center gap-2 text-responsive-sm">
                       연관된 최근 이슈
                     </h4>
                     <div className="flex flex-wrap gap-2">
