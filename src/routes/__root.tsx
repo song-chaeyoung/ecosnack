@@ -1,9 +1,9 @@
 import {
   HeadContent,
+  Link,
+  Outlet,
   Scripts,
   createRootRoute,
-  Outlet,
-  Link,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
@@ -11,7 +11,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import appCss from '../styles.css?url'
 import { Navigation } from '../components/Navigation'
 import { ScrollToTopButton } from '../components/ScrollToTopButton'
-import { getDefaultMeta, SITE_CONFIG } from '../lib/seo'
+import { SITE_CONFIG, getDefaultMeta } from '../lib/seo'
+import { Footer } from '@/components/Footer'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -60,6 +61,7 @@ function RootLayout() {
       <div className="pt-18 sm:pt-16">
         <Outlet />
       </div>
+      <Footer />
       <ScrollToTopButton />
     </>
   )
@@ -73,17 +75,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        {typeof window !== 'undefined' && (
+          <TanStackDevtools
+            config={{
+              position: 'bottom-right',
+            }}
+            plugins={[
+              {
+                name: 'Tanstack Router',
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+        )}
         <Scripts />
       </body>
     </html>
