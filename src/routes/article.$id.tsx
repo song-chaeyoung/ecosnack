@@ -90,7 +90,7 @@ function ArticleDetailPage() {
   return (
     <div className="bg-white min-h-screen flex flex-col">
       {/* Article Content */}
-      <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 flex-1">
+      <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-4 sm:py-8 lg:py-12 flex-1">
         {/* Article Header */}
         <ArticleHeader article={article} />
 

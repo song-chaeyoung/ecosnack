@@ -30,7 +30,7 @@ export function Navigation() {
             <img
               src="https://cdn.heyvona.com/logo.png"
               alt="Logo"
-              className="object-cover w-20 h-20"
+              className="object-cover w-44 h-16"
             />
           </Link>
 

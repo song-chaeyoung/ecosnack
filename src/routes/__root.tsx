@@ -58,7 +58,7 @@ function RootLayout() {
   return (
     <>
       <Navigation />
-      <div className="pt-18 sm:pt-16">
+      <div className="pt-16 sm-pt-14">
         <Outlet />
       </div>
       <Footer />
