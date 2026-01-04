@@ -1,4 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+} from '@clerk/tanstack-react-start'
 import { CategoryBadge } from '../components/CategoryBadge'
 import { ShareButtons } from '../components/feature/article/ShareButtons'
 import { Footer } from '../components/Footer'
@@ -103,6 +108,29 @@ function ArticleNotFound() {
   )
 }
 
+function LoginRequired() {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center p-4 text-center">
+      <div className="w-20 h-20 bg-gradient-to-br from-amber-50 to-orange-100 rounded-full flex items-center justify-center mb-6">
+        <span className="text-4xl">🔒</span>
+      </div>
+      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-3">
+        로그인이 필요합니다
+      </h2>
+      <p className="text-gray-600 mb-8 max-w-md">
+        기사의 상세 내용을 보려면 로그인해 주세요.
+        <br />
+        무료로 가입하고 모든 콘텐츠를 확인하세요!
+      </p>
+      <SignInButton mode="modal">
+        <button className="px-8 py-3 bg-[#1a1a1a] text-white rounded-lg font-medium hover:bg-[#333] transition-colors">
+          로그인하기
+        </button>
+      </SignInButton>
+    </div>
+  )
+}
+
 function ArticleDetailPage() {
   const { article } = Route.useLoaderData()
 
@@ -117,8 +145,16 @@ function ArticleDetailPage() {
 
   return (
     <div className="bg-white min-h-screen flex flex-col">
-      {/* Article Content */}
-      <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 flex-1">
+      {/* 로그인하지 않은 사용자 */}
+      <SignedOut>
+        <LoginRequired />
+        <Footer />
+      </SignedOut>
+
+      {/* 로그인한 사용자만 기사 내용 표시 */}
+      <SignedIn>
+        {/* Article Content */}
+        <article className="max-w-[680px] mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12 flex-1">
         {/* Article Header */}
         <header className="mb-6 sm:mb-8">
           <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -438,6 +474,7 @@ function ArticleDetailPage() {
       </article>
 
       <Footer />
+      </SignedIn>
     </div>
   )
 }
