@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 // 북마크 토글 (추가/제거)
 export const toggleBookmark = createServerFn({ method: 'POST' })
-  .validator(zodValidator(z.object({ articleId: z.number() })))
+  .inputValidator(zodValidator(z.object({ articleId: z.number() })))
   .handler(async ({ data }) => {
     const { userId } = await auth()
 
@@ -54,7 +54,7 @@ export const toggleBookmark = createServerFn({ method: 'POST' })
 
 // 북마크 상태 확인
 export const getBookmarkStatus = createServerFn({ method: 'GET' })
-  .validator(zodValidator(z.object({ articleId: z.number() })))
+  .inputValidator(zodValidator(z.object({ articleId: z.number() })))
   .handler(async ({ data }) => {
     const { userId } = await auth()
 
@@ -74,7 +74,7 @@ export const getBookmarkStatus = createServerFn({ method: 'GET' })
 
 // 여러 기사의 북마크 상태 한번에 확인 (목록 페이지용)
 export const getBookmarkStatuses = createServerFn({ method: 'GET' })
-  .validator(zodValidator(z.object({ articleIds: z.array(z.number()) })))
+  .inputValidator(zodValidator(z.object({ articleIds: z.array(z.number()) })))
   .handler(async ({ data }) => {
     const { userId } = await auth()
 
