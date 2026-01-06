@@ -6,7 +6,6 @@ import {
   UserButton,
 } from '@clerk/tanstack-react-start'
 import { ArrowLeft } from 'lucide-react'
-import { LazyImage } from './LazyImage'
 
 export function Navigation() {
   const router = useRouter()
