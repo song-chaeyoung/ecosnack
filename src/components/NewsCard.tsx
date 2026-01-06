@@ -27,7 +27,7 @@ export function NewsCard({ article }: NewsCardProps) {
 
   return (
     <Link to={`/article/$id`} params={{ id: String(id) }}>
-      <article className="relative bg-card border p-4 sm:p-6 rounded-sm transition-scale duration-300 ease-in-out cursor-pointer hover:scale-[1.02] hover:shadow-xl origin-center">
+      <article className="relative bg-card border p-4 sm:p-6 rounded-sm cursor-pointer hover:scale-[1.02] hover:shadow-xl origin-center transition-[transform,box-shadow] duration-300 ease-in-out">
         {/* Bookmark Button */}
         <div className="absolute top-3 right-3 z-10">
           <BookmarkButton articleId={id} size="sm" />
@@ -39,7 +39,7 @@ export function NewsCard({ article }: NewsCardProps) {
             alt={title}
             loading="lazy"
             decoding="async"
-            className="w-full aspect-video object-cover mb-3 rounded-sm bg-gray-100 dark:bg-gray-800"
+            className="w-full aspect-video object-cover mb-3 rounded-sm bg-muted"
           />
         )}
 

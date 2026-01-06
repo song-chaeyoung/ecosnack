@@ -60,7 +60,7 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
 
   return (
     <div
-      className={`${config.bgGradient} rounded-xl shadow-sm border border-white/60 dark:border-gray-700/30 overflow-hidden transition-all duration-300 hover:shadow-md dark:hover:shadow-gray-900/50`}
+      className={`${config.bgGradient} rounded-xl shadow-sm border border-white/60 dark:border-gray-700/30 overflow-hidden hover:shadow-md dark:hover:shadow-gray-900/50`}
     >
       {/* Header with Icon */}
       <div className="p-6 pb-4">
@@ -70,12 +70,12 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
           >
             {config.icon}
           </div>
-          <h4 className="font-semibold text-[#1a1a1a] dark:text-white text-lg pt-1.5">
+          <h4 className="font-semibold text-foreground text-lg pt-1.5">
             {config.title}
           </h4>
         </div>
         <p
-          className="text-[#1a1a1a] dark:text-gray-200 leading-relaxed"
+          className="text-foreground leading-relaxed"
           style={{ fontSize: '15px', lineHeight: '1.7' }}
         >
           {data.summary}
@@ -89,7 +89,7 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
           <>
             {data.action_items && data.action_items.length > 0 && (
               <div className="bg-white/70 dark:bg-gray-800/50 rounded-lg p-4">
-                <h5 className="text-sm font-semibold mb-3 text-[#1a1a1a] dark:text-white flex items-center gap-2">
+                <h5 className="text-sm font-semibold mb-3 text-foreground flex items-center gap-2">
                   <span className={config.iconColor}>✓</span>
                   대응 방안
                 </h5>
@@ -97,7 +97,7 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
                   {data.action_items.map((item: string, i: number) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2.5 text-[#666666] dark:text-gray-300"
+                      className="flex items-start gap-2.5 text-muted-foreground"
                       style={{ fontSize: '14px', lineHeight: '1.6' }}
                     >
                       <span
@@ -114,14 +114,14 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
 
             {data.sectors_affected && data.sectors_affected.length > 0 && (
               <div>
-                <h5 className="text-sm font-semibold mb-2.5 text-[#1a1a1a] dark:text-white">
+                <h5 className="text-sm font-semibold mb-2.5 text-foreground">
                   영향받는 섹터
                 </h5>
                 <div className="flex flex-wrap gap-2">
                   {data.sectors_affected.map((sector: string, i: number) => (
                     <span
                       key={i}
-                      className={`px-3 py-1.5 ${config.tagBg} ${config.tagText} rounded-lg text-sm font-medium transition-all hover:scale-105`}
+                      className={`px-3 py-1.5 ${config.tagBg} ${config.tagText} rounded-lg text-sm font-medium hover:scale-105`}
                     >
                       {sector}
                     </span>
@@ -137,7 +137,7 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
             {data.industries_affected &&
               data.industries_affected.length > 0 && (
                 <div>
-                  <h5 className="text-sm font-semibold mb-2.5 text-[#1a1a1a] dark:text-white">
+                  <h5 className="text-sm font-semibold mb-2.5 text-foreground">
                     영향받는 산업군
                   </h5>
                   <div className="flex flex-wrap gap-2">
@@ -145,7 +145,7 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
                       (industry: string, i: number) => (
                         <span
                           key={i}
-                          className={`px-3 py-1.5 ${config.tagBg} ${config.tagText} rounded-lg text-sm font-medium transition-all hover:scale-105`}
+                          className={`px-3 py-1.5 ${config.tagBg} ${config.tagText} rounded-lg text-sm font-medium hover:scale-105`}
                         >
                           {industry}
                         </span>
@@ -157,12 +157,12 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
 
             {data.job_outlook && (
               <div className="bg-white/70 dark:bg-gray-800/50 rounded-lg p-4">
-                <h5 className="text-sm font-semibold mb-2 text-[#1a1a1a] dark:text-white flex items-center gap-2">
+                <h5 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-2">
                   <span className={config.iconColor}>📈</span>
                   고용 전망
                 </h5>
                 <p
-                  className="text-[#666666] dark:text-gray-300 leading-relaxed"
+                  className="text-muted-foreground leading-relaxed"
                   style={{ fontSize: '14px' }}
                 >
                   {data.job_outlook}
@@ -176,12 +176,12 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
           <>
             {data.price_impact && (
               <div className="bg-white/70 dark:bg-gray-800/50 rounded-lg p-4">
-                <h5 className="text-sm font-semibold mb-2 text-[#1a1a1a] dark:text-white flex items-center gap-2">
+                <h5 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-2">
                   <span className={config.iconColor}>💰</span>
                   물가/생활비 영향
                 </h5>
                 <p
-                  className="text-[#666666] dark:text-gray-300 leading-relaxed"
+                  className="text-muted-foreground leading-relaxed"
                   style={{ fontSize: '14px' }}
                 >
                   {data.price_impact}
@@ -191,12 +191,12 @@ export function ImpactItem({ type, data }: ImpactItemProps) {
 
             {data.spending_advice && (
               <div className="bg-white/70 dark:bg-gray-800/50 rounded-lg p-4">
-                <h5 className="text-sm font-semibold mb-2 text-[#1a1a1a] dark:text-white flex items-center gap-2">
+                <h5 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-2">
                   <span className={config.iconColor}>💡</span>
                   소비 관련 조언
                 </h5>
                 <p
-                  className="text-[#666666] dark:text-gray-300 leading-relaxed"
+                  className="text-muted-foreground leading-relaxed"
                   style={{ fontSize: '14px' }}
                 >
                   {data.spending_advice}

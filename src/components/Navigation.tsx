@@ -22,7 +22,7 @@ export function Navigation() {
             {isArticleDetail && (
               <div
                 onClick={() => router.history.back()}
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground cursor-pointer"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="hidden sm:inline text-sm font-medium">
@@ -59,7 +59,7 @@ export function Navigation() {
             </SignedIn>
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                <button className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
                   로그인
                 </button>
               </SignInButton>

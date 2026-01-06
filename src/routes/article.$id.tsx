@@ -140,7 +140,7 @@ function ArticleDetailPage() {
                 <img
                   src={article.imageUrl}
                   alt={article.title}
-                  className="w-full aspect-video object-cover max-h-[400px] bg-gray-100 dark:bg-gray-800"
+                  className="w-full aspect-video object-cover max-h-[400px] bg-muted"
                   loading="lazy"
                   decoding="async"
                 />
@@ -159,7 +159,7 @@ function ArticleDetailPage() {
                   href={article.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-link dark:text-blue-400 hover:underline text-responsive-sm font-medium"
+                  className="inline-flex items-center gap-2 text-primary hover:underline text-responsive-sm font-medium"
                 >
                   원문 보기 →
                 </a>
@@ -168,14 +168,14 @@ function ArticleDetailPage() {
 
             {/* So What Section */}
             {article.soWhat && (
-              <div className="mb-8 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/40 dark:via-yellow-950/40 dark:to-orange-950/40 rounded-2xl shadow-sm border border-amber-100/50 dark:border-amber-900/30 overflow-hidden transition-all duration-300 hover:shadow-md">
+              <div className="mb-8 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/40 dark:via-yellow-950/40 dark:to-orange-950/40 rounded-2xl shadow-sm border border-amber-100/50 dark:border-amber-900/30 overflow-hidden hover:shadow-md">
                 {/* Header */}
                 <div className="p-6 pb-4">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0">
                       🤔
                     </div>
-                    <h3 className="text-lg font-semibold text-text-primary dark:text-white pt-1.5 text-responsive-lg">
+                    <h3 className="text-lg font-semibold text-foreground pt-1.5 text-responsive-lg">
                       So What?
                     </h3>
                   </div>
@@ -188,7 +188,7 @@ function ArticleDetailPage() {
                 <div className="px-6 pb-6 space-y-3">
                   {/* Market Signal */}
                   <div className="bg-card/50 rounded-lg p-4">
-                    <h4 className="text-sm font-semibold mb-2 text-text-primary dark:text-white flex items-center gap-2">
+                    <h4 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-2">
                       <span className="text-amber-600 dark:text-amber-400">
                         📈
                       </span>
@@ -201,7 +201,7 @@ function ArticleDetailPage() {
 
                   {/* Time Horizon */}
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-text-primary dark:text-white">
+                    <span className="text-sm font-semibold text-foreground">
                       ⏱️ 영향 기간:
                     </span>
                     <span
@@ -225,7 +225,7 @@ function ArticleDetailPage() {
             {/* Impact Analysis */}
             {article.impactAnalysis && (
               <div className="mb-8 space-y-4">
-                <h3 className="text-lg font-semibold text-text-primary dark:text-white">
+                <h3 className="text-lg font-semibold text-foreground">
                   영향 분석 📊
                 </h3>
 
@@ -251,14 +251,14 @@ function ArticleDetailPage() {
 
             {/* Related Context */}
             {article.relatedContext && (
-              <div className="mb-8 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/40 dark:to-zinc-950/40 rounded-2xl shadow-sm border border-slate-100/50 dark:border-slate-900/30 overflow-hidden transition-all duration-300 hover:shadow-md">
+              <div className="mb-8 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/40 dark:to-zinc-950/40 rounded-2xl shadow-sm border border-slate-100/50 dark:border-slate-900/30 overflow-hidden hover:shadow-md">
                 {/* Header */}
                 <div className="p-6 pb-4">
                   <div className="flex items-start gap-3 mb-4">
                     <div className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0">
                       📚
                     </div>
-                    <h3 className="text-lg font-semibold text-text-primary dark:text-white pt-1.5 text-responsive-lg">
+                    <h3 className="text-lg font-semibold text-foreground pt-1.5 text-responsive-lg">
                       배경 정보
                     </h3>
                   </div>
@@ -272,7 +272,7 @@ function ArticleDetailPage() {
                   {/* Related Events */}
                   {article.relatedContext.related_events.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold mb-2.5 text-text-primary dark:text-white flex items-center gap-2 text-responsive-sm">
+                      <h4 className="text-sm font-semibold mb-2.5 text-foreground flex items-center gap-2 text-responsive-sm">
                         연관된 최근 이슈
                       </h4>
                       <div className="flex flex-wrap gap-2">
@@ -293,7 +293,7 @@ function ArticleDetailPage() {
                   {/* What to Watch */}
                   {article.relatedContext.what_to_watch && (
                     <div className="bg-card/50 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold mb-2 text-text-primary dark:text-white flex items-center gap-2">
+                      <h4 className="text-sm font-semibold mb-2 text-foreground flex items-center gap-2">
                         <span className="text-slate-600 dark:text-slate-400">
                           👀
                         </span>
