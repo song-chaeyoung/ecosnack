@@ -31,6 +31,7 @@ import { Navigation } from '../components/Navigation'
 import { ScrollToTopButton } from '../components/ScrollToTopButton'
 import { SITE_CONFIG, getDefaultMeta } from '../lib/seo'
 import { ClerkProvider } from '@clerk/tanstack-react-start'
+import { useThemeStore } from '../stores/themeStore'
 
 interface RouterContext {
   queryClient: QueryClient
@@ -87,16 +88,22 @@ export const Route = createRootRouteWithContext<RouterContext>()({
               var themeStorage = localStorage.getItem('theme-storage');
               var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
               var isDark = systemPrefersDark;
-
+              
               if (themeStorage) {
                 try {
                   var parsed = JSON.parse(themeStorage);
+
                   if (parsed && parsed.state && typeof parsed.state.theme === 'string') {
-                    isDark = parsed.state.theme === 'dark';
+                    // isUserSelected가 명시적으로 false인 경우에만 시스템 테마 사용
+                    if (parsed.state.isUserSelected === false) {
+                      isDark = systemPrefersDark;
+                    } else {
+                      // 그 외의 경우 (true 또는 undefined) 저장된 테마 사용
+                      isDark = parsed.state.theme === 'dark';
+              
+                    }
                   }
-                } catch (e) {
-                  console.error('Failed to parse theme-storage:', e);
-                }
+                } 
               }
 
               if (isDark) {
@@ -104,7 +111,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
               } else {
                 document.documentElement.classList.remove('dark');
               }
-            } catch (e) {}
+            } 
           })();
         `,
       },
@@ -134,9 +141,15 @@ function RootLayout() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const theme = useThemeStore((state) => state.theme)
+
   return (
     <ClerkProvider>
-      <html lang="ko" suppressHydrationWarning>
+      <html
+        lang="ko"
+        className={theme === 'dark' ? 'dark' : ''}
+        suppressHydrationWarning
+      >
         <head>
           <HeadContent />
         </head>

@@ -5,13 +5,15 @@ type Theme = 'light' | 'dark'
 
 interface ThemeStore {
   theme: Theme
+  isUserSelected: boolean // 사용자가 명시적으로 선택했는지 여부
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
 }
 
 // 초기 테마 감지 (SSR 안전)
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'light'
+function getInitialTheme(): { theme: Theme; isUserSelected: boolean } {
+  if (typeof window === 'undefined')
+    return { theme: 'light', isUserSelected: false }
 
   try {
     const stored = localStorage.getItem('theme-storage')
@@ -21,47 +23,69 @@ function getInitialTheme(): Theme {
         parsed.state?.theme &&
         ['light', 'dark'].includes(parsed.state.theme)
       ) {
-        return parsed.state.theme as Theme
+        return {
+          theme: parsed.state.theme as Theme,
+          // 이전 버전 호환성: 저장된 테마가 있으면 사용자가 선택한 것으로 간주
+          isUserSelected: parsed.state.isUserSelected ?? true,
+        }
       }
     }
   } catch (e) {
     // localStorage 접근 실패 시 무시
   }
 
-  // 시스템 테마 감지
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  // 시스템 테마 감지 (사용자가 선택하지 않은 경우)
+  return {
+    theme: window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
+    isUserSelected: false,
+  }
+}
+
+// DOM 업데이트 헬퍼 함수
+function updateDOM(theme: Theme) {
+  if (typeof window !== 'undefined') {
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }
 }
 
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => {
-      const initialTheme = getInitialTheme()
+      const initial = getInitialTheme()
 
       // 초기 상태에서 즉시 DOM 업데이트 (클라이언트 사이드 전용)
+      updateDOM(initial.theme)
+
+      // 시스템 테마 변경 감지 (클라이언트 사이드 전용)
       if (typeof window !== 'undefined') {
-        const root = document.documentElement
-        if (initialTheme === 'dark') {
-          root.classList.add('dark')
-        } else {
-          root.classList.remove('dark')
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
+        const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+          const state = get()
+          // 사용자가 명시적으로 선택하지 않은 경우에만 시스템 테마 따라가기
+          if (!state.isUserSelected) {
+            const newTheme = e.matches ? 'dark' : 'light'
+            set({ theme: newTheme })
+            updateDOM(newTheme)
+          }
         }
+
+        mediaQuery.addEventListener('change', handleSystemThemeChange)
       }
 
       return {
-        theme: initialTheme,
+        theme: initial.theme,
+        isUserSelected: initial.isUserSelected,
         setTheme: (theme: Theme) => {
-          set({ theme })
-          // DOM 업데이트
-          if (typeof window !== 'undefined') {
-            const root = document.documentElement
-            if (theme === 'dark') {
-              root.classList.add('dark')
-            } else {
-              root.classList.remove('dark')
-            }
-          }
+          set({ theme, isUserSelected: true }) // 사용자가 선택했음을 표시
+          updateDOM(theme)
         },
         toggleTheme: () => {
           const newTheme = get().theme === 'dark' ? 'light' : 'dark'
@@ -74,13 +98,8 @@ export const useThemeStore = create<ThemeStore>()(
       storage: createJSONStorage(() => localStorage),
       // 초기화 후 DOM 동기화
       onRehydrateStorage: () => (state) => {
-        if (state && typeof window !== 'undefined') {
-          const root = document.documentElement
-          if (state.theme === 'dark') {
-            root.classList.add('dark')
-          } else {
-            root.classList.remove('dark')
-          }
+        if (state) {
+          updateDOM(state.theme)
         }
       },
     },
