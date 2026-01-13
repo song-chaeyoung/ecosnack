@@ -34,6 +34,8 @@ import { SITE_CONFIG, getDefaultMeta } from '../lib/seo'
 import { ClerkProvider } from '@clerk/tanstack-react-start'
 import { PostHogProvider } from 'posthog-js/react'
 import { useThemeStore } from '../stores/themeStore'
+import { Footer } from '@/components/Footer'
+import { usePostHogIdentify } from '@/hooks/usePostHogIdentify'
 
 const posthogOptions = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
@@ -130,6 +132,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootLayout() {
+  // PostHog 사용자 식별
+  usePostHogIdentify()
+
   return (
     <>
       <Sidebar />
@@ -137,6 +142,7 @@ function RootLayout() {
       <main className="pt-16 sm-pt-14">
         <Outlet />
       </main>
+      <Footer />
       <ScrollToTopButton />
     </>
   )
