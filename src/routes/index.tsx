@@ -124,7 +124,6 @@ function HomePage() {
         {/* Intersection Observer 트리거 */}
         {hasNextPage && <div ref={observerRef} className="h-10" />}
       </div>
-      <Footer />
     </main>
   )
 }

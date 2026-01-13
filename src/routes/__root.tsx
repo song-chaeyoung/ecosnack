@@ -34,6 +34,7 @@ import { SITE_CONFIG, getDefaultMeta } from '../lib/seo'
 import { ClerkProvider } from '@clerk/tanstack-react-start'
 import { PostHogProvider } from 'posthog-js/react'
 import { useThemeStore } from '../stores/themeStore'
+import { Footer } from '@/components/Footer'
 
 const posthogOptions = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
@@ -137,6 +138,7 @@ function RootLayout() {
       <main className="pt-16 sm-pt-14">
         <Outlet />
       </main>
+      <Footer />
       <ScrollToTopButton />
     </>
   )
