@@ -9,7 +9,7 @@ export function ShareButtons() {
           url: window.location.href,
         })
       } catch (err) {
-        console.log('Error sharing', err)
+        throw new Error(err as string)
       }
     } else {
       // Fallback for browsers that don't support Web Share API
