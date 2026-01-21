@@ -8,6 +8,7 @@ import {
 import Autoplay from 'embla-carousel-autoplay'
 import { Card } from '@/components/ui/card'
 import { MapPin, User } from 'lucide-react'
+import { DailyReportSkeleton } from './DailyReportSkeleton'
 
 // Mock data - newspaper style with multiple images
 const MOCK_REPORTS = [
@@ -107,6 +108,9 @@ export const DailyReports = () => {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
 
+  // TODO: Replace with actual data fetching
+  const isLoading = true // Set to true to see skeleton
+
   useEffect(() => {
     if (!api) return
 
@@ -146,100 +150,136 @@ export const DailyReports = () => {
           className="w-full py-2 sm:py-4 "
         >
           <CarouselContent className="-ml-2 sm:-ml-3 ">
-            {MOCK_REPORTS.map((report, index) => {
-              // Calculate distance from center for progressive scaling
-              const totalSlides = MOCK_REPORTS.length
-              const distance = Math.abs(current - index)
+            {isLoading
+              ? // Skeleton cards
+                Array(6)
+                  .fill(0)
+                  .map((_, index) => {
+                    const totalSlides = 6
+                    const distance = Math.abs(current - index)
+                    const wrappedDistance = Math.min(
+                      distance,
+                      totalSlides - distance,
+                    )
+                    const normalizedDistance = Math.min(wrappedDistance, 2) / 2
+                    const scale = 1.0 - normalizedDistance * 0.15
+                    const opacity = 1.0 - normalizedDistance * 0.3
 
-              // Handle loop wrapping
-              const wrappedDistance = Math.min(distance, totalSlides - distance)
-
-              // Calculate scale based on distance
-              const normalizedDistance = Math.min(wrappedDistance, 2) / 2
-              const scale = 1.0 - normalizedDistance * 0.15
-              const opacity = 1.0 - normalizedDistance * 0.3
-
-              return (
-                <CarouselItem
-                  key={report.id}
-                  className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/4 lg:basis-1/5 overflow-visible"
-                >
-                  <div
-                    className="transition-all duration-500 ease-out"
-                    style={{
-                      transform: `scale(${scale})`,
-                      opacity: opacity,
-                    }}
-                  >
-                    {/* Clean Modern Newspaper Card */}
-                    <Card className="group cursor-pointer overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 bg-card aspect-[3/4] w-full">
-                      <div className="h-full flex flex-col">
-                        {/* Main Image - Top 50% */}
-                        <div className="relative h-1/2 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                          <img
-                            src={report.images[0]}
-                            alt={report.title}
-                            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
-                              wrappedDistance === 0 ? '' : 'grayscale'
-                            }`}
-                          />
-                          {/* Date Badge */}
-                          <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1 rounded">
-                            <span className="text-xs font-medium text-gray-900 dark:text-white">
-                              {new Date(report.date).toLocaleDateString(
-                                'ko-KR',
-                                {
-                                  month: 'short',
-                                  day: 'numeric',
-                                },
-                              )}
-                            </span>
-                          </div>
+                    return (
+                      <CarouselItem
+                        key={`skeleton-${index}`}
+                        className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/4 lg:basis-1/5 overflow-visible"
+                      >
+                        <div
+                          className="transition-all duration-500 ease-out"
+                          style={{
+                            transform: `scale(${scale})`,
+                            opacity: opacity,
+                          }}
+                        >
+                          <DailyReportSkeleton />
                         </div>
+                      </CarouselItem>
+                    )
+                  })
+              : // Real data
+                MOCK_REPORTS.map((report, index) => {
+                  // Calculate distance from center for progressive scaling
+                  const totalSlides = MOCK_REPORTS.length
+                  const distance = Math.abs(current - index)
 
-                        {/* Content - Bottom 50% */}
-                        <div className="h-1/2 p-4 flex flex-col">
-                          {/* Location & Author */}
-                          <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {report.location}
-                            </span>
-                            <span>•</span>
-                            <span className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              {report.author}
-                            </span>
+                  // Handle loop wrapping
+                  const wrappedDistance = Math.min(
+                    distance,
+                    totalSlides - distance,
+                  )
+
+                  // Calculate scale based on distance
+                  const normalizedDistance = Math.min(wrappedDistance, 2) / 2
+                  const scale = 1.0 - normalizedDistance * 0.15
+                  const opacity = 1.0 - normalizedDistance * 0.3
+
+                  return (
+                    <CarouselItem
+                      key={report.id}
+                      className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/4 lg:basis-1/5 overflow-visible"
+                    >
+                      <div
+                        className="transition-all duration-500 ease-out"
+                        style={{
+                          transform: `scale(${scale})`,
+                          opacity: opacity,
+                        }}
+                      >
+                        {/* Clean Modern Newspaper Card */}
+                        <Card className="group cursor-pointer overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 bg-card aspect-[3/4] w-full">
+                          <div className="h-full flex flex-col">
+                            {/* Main Image - Top 50% */}
+                            <div className="relative h-1/2 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                              <img
+                                src={report.images[0]}
+                                alt={report.title}
+                                className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
+                                  wrappedDistance === 0 ? '' : 'grayscale'
+                                }`}
+                              />
+                              {/* Date Badge */}
+                              <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1 rounded">
+                                <span className="text-xs font-medium text-gray-900 dark:text-white">
+                                  {new Date(report.date).toLocaleDateString(
+                                    'ko-KR',
+                                    {
+                                      month: 'short',
+                                      day: 'numeric',
+                                    },
+                                  )}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Content - Bottom 50% */}
+                            <div className="h-1/2 p-4 flex flex-col">
+                              {/* Location & Author */}
+                              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {report.location}
+                                </span>
+                                <span>•</span>
+                                <span className="flex items-center gap-1">
+                                  <User className="w-3 h-3" />
+                                  {report.author}
+                                </span>
+                              </div>
+
+                              {/* Title */}
+                              <h3 className="font-bold text-responsive-lg leading-tight mb-2 line-clamp-2 text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                {report.title}
+                              </h3>
+
+                              {/* Summary */}
+                              <p className="text-responsive-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-3 flex-1 leading-relaxed">
+                                {report.summary}
+                              </p>
+
+                              {/* Topics */}
+                              <div className="flex flex-wrap gap-1.5 mt-auto">
+                                {report.keyTopics.map((topic, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                  >
+                                    {topic}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                           </div>
-
-                          {/* Title */}
-                          <h3 className="font-bold text-responsive-lg leading-tight mb-2 line-clamp-2 text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                            {report.title}
-                          </h3>
-
-                          {/* Summary */}
-                          <p className="text-responsive-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-3 flex-1 leading-relaxed">
-                            {report.summary}
-                          </p>
-
-                          {/* Topics */}
-                          <div className="flex flex-wrap gap-1.5 mt-auto">
-                            {report.keyTopics.map((topic, idx) => (
-                              <span
-                                key={idx}
-                                className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                              >
-                                {topic}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
+                        </Card>
                       </div>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              )
-            })}
+                    </CarouselItem>
+                  )
+                })}
           </CarouselContent>
         </Carousel>
       </div>
