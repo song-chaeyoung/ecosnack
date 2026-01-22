@@ -254,10 +254,10 @@ export const DailyReports = () => {
   }, [api])
 
   return (
-    <section className="w-full  py-6 ">
+    <section className="w-full py-4 lg:py-8 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
+        <div className="text-center mb-3 sm:mb-5">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
             데일리 리포트
           </h2>
@@ -300,7 +300,7 @@ export const DailyReports = () => {
                     return (
                       <CarouselItem
                         key={`skeleton-${index}`}
-                        className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/4 lg:basis-1/5 overflow-visible"
+                        className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/3 lg:basis-1/3 overflow-visible"
                       >
                         <div
                           className="transition-all duration-500 ease-out"
@@ -334,7 +334,7 @@ export const DailyReports = () => {
                   return (
                     <CarouselItem
                       key={report.id}
-                      className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/4 lg:basis-1/5 overflow-visible"
+                      className="pl-2 sm:pl-3 basis-full sm:basis-1/3 md:basis-1/3 lg:basis-1/3 overflow-visible"
                     >
                       <div
                         className="transition-all duration-500 ease-out"
@@ -343,21 +343,47 @@ export const DailyReports = () => {
                           opacity: opacity,
                         }}
                       >
-                        {/* Clean Modern Newspaper Card */}
-                        <Card className="group cursor-pointer overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 bg-card aspect-[3/4] w-full">
+                        {/* Newspaper-style Card */}
+                        <Card className="group cursor-pointer overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card aspect-[3/4] w-full relative !rounded-none !border-none">
                           <div className="h-full flex flex-col">
                             {/* Main Image - Top 50% */}
                             <div className="relative h-1/2 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                              <img
-                                src={
-                                  report.executiveSummary.highlights[0]
-                                    ?.relatedArticle.url || '/placeholder.jpg'
-                                }
-                                alt={report.executiveSummary.headline}
-                                className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
-                                  wrappedDistance === 0 ? '' : 'grayscale'
-                                }`}
-                              />
+                              {/* Dual Image Grid */}
+                              <div className="grid grid-cols-5 gap-0 h-full">
+                                {/* Main Image - 60% (3/5) */}
+                                <div className="col-span-3 relative h-full overflow-hidden">
+                                  <img
+                                    src={
+                                      report.executiveSummary.highlights[0]
+                                        ?.relatedArticle.url ||
+                                      '/placeholder.jpg'
+                                    }
+                                    alt={report.executiveSummary.headline}
+                                    className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
+                                      wrappedDistance === 0 ? '' : 'grayscale'
+                                    }`}
+                                  />
+                                </div>
+
+                                {/* Secondary Image - 40% (2/5) */}
+                                {report.executiveSummary.highlights[1] && (
+                                  <div className="col-span-2 relative h-full overflow-hidden">
+                                    <img
+                                      src={
+                                        report.executiveSummary.highlights[1]
+                                          .relatedArticle.url
+                                      }
+                                      alt={
+                                        report.executiveSummary.highlights[1]
+                                          .title
+                                      }
+                                      className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
+                                        wrappedDistance === 0 ? '' : 'grayscale'
+                                      }`}
+                                    />
+                                  </div>
+                                )}
+                              </div>
 
                               {/* Sentiment Badge - Top Left */}
                               <div
@@ -367,20 +393,20 @@ export const DailyReports = () => {
                                 }
                               >
                                 <div
-                                  className={`px-2.5 py-1 rounded backdrop-blur-sm ${
+                                  className={`px-2.5 py-1 backdrop-blur-sm ${
                                     report.executiveSummary.sentiment
                                       .overall === 'positive'
-                                      ? 'bg-emerald-500/90'
+                                      ? 'bg-emerald-600/95'
                                       : report.executiveSummary.sentiment
                                             .overall === 'negative'
-                                        ? 'bg-red-500/90'
+                                        ? 'bg-red-600/95'
                                         : report.executiveSummary.sentiment
                                               .overall === 'mixed'
-                                          ? 'bg-yellow-500/90'
-                                          : 'bg-gray-500/90'
+                                          ? 'bg-yellow-600/95'
+                                          : 'bg-gray-600/95'
                                   }`}
                                 >
-                                  <span className="text-xs font-medium text-white">
+                                  <span className="text-xs font-bold text-white uppercase tracking-wide">
                                     {report.executiveSummary.sentiment
                                       .overall === 'positive' && '📈 긍정'}
                                     {report.executiveSummary.sentiment
@@ -394,8 +420,8 @@ export const DailyReports = () => {
                               </div>
 
                               {/* Date Badge - Top Right */}
-                              <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1 rounded">
-                                <span className="text-xs font-medium text-gray-900 dark:text-white">
+                              <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1">
+                                <span className="text-xs font-bold text-gray-900 dark:text-white uppercase">
                                   {new Date(
                                     report.reportDate,
                                   ).toLocaleDateString('ko-KR', {
@@ -408,20 +434,36 @@ export const DailyReports = () => {
 
                             {/* Content - Bottom 50% */}
                             <div className="h-1/2 p-4 flex flex-col">
-                              {/* Article Count & Date */}
+                              {/* Article Count */}
                               <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                                <span className="flex items-center gap-1">
+                                <span className="flex items-center gap-1 font-semibold uppercase tracking-wide">
                                   📰 {report.articleCount}개 기사 분석
                                 </span>
                               </div>
 
                               {/* Title - Headline */}
-                              <h3 className="font-bold text-responsive-lg leading-tight mb-2 line-clamp-2 text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                              <h3 className="font-extrabold text-responsive-lg leading-tight mb-1 line-clamp-2 text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                 {report.executiveSummary.headline}
                               </h3>
 
+                              {/* Colored Underline */}
+                              <div
+                                className={`h-0.5 w-60 mb-3 ${
+                                  report.executiveSummary.sentiment.overall ===
+                                  'positive'
+                                    ? 'bg-emerald-600'
+                                    : report.executiveSummary.sentiment
+                                          .overall === 'negative'
+                                      ? 'bg-red-600'
+                                      : report.executiveSummary.sentiment
+                                            .overall === 'mixed'
+                                        ? 'bg-yellow-600'
+                                        : 'bg-gray-600'
+                                }`}
+                              />
+
                               {/* Summary - Overview */}
-                              <p className="text-responsive-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-3 flex-1 leading-relaxed">
+                              <p className="text-responsive-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-3 flex-1 leading-relaxed truncate text-underline text-decoration-thickness-2">
                                 {report.executiveSummary.overview}
                               </p>
 
@@ -430,7 +472,18 @@ export const DailyReports = () => {
                                 {report.topKeywords.map((keyword, idx) => (
                                   <span
                                     key={idx}
-                                    className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                    className={`text-xs px-2 py-1 font-semibold uppercase tracking-wide ${
+                                      report.executiveSummary.sentiment
+                                        .overall === 'positive'
+                                        ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                                        : report.executiveSummary.sentiment
+                                              .overall === 'negative'
+                                          ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                                          : report.executiveSummary.sentiment
+                                                .overall === 'mixed'
+                                            ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
+                                            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                                    }`}
                                   >
                                     {keyword}
                                   </span>
