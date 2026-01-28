@@ -15,9 +15,7 @@ import { SentimentBadge } from '@/components/feature/dailyReport/SentimentBadge'
 
 export const DailyReports = () => {
   const [api, setApi] = useState<CarouselApi>()
-  // TODO : 데이터 많아지면 캐러셀 수정
-  const [current, setCurrent] = useState(1) // 두 번째 슬라이드부터 시작
-
+  const [current, setCurrent] = useState(0)
   const { data, isLoading } = useQuery(dailyReportsQueryOptions({ limit: 10 }))
   const reports = data?.reports || []
 
@@ -53,7 +51,7 @@ export const DailyReports = () => {
             loop: true,
             skipSnaps: false,
             slidesToScroll: 1,
-            startIndex: 1, // 두 번째 슬라이드(첫 번째 실제 데이터)부터 시작
+            startIndex: 0,
           }}
           plugins={[
             Autoplay({
@@ -65,18 +63,13 @@ export const DailyReports = () => {
           className="w-full py-2 sm:py-4 "
         >
           <CarouselContent className="-ml-2 sm:-ml-3 ">
-            {/* 첫 번째 빈 슬라이드 - 최신 데이터가 중앙에 오도록 */}
-            <CarouselItem className="pl-2 sm:pl-3 basis-full sm:basis-4/5 md:basis-3/5 lg:basis-2/5 overflow-visible">
-              <div className="opacity-0 pointer-events-none aspect-[3/4]" />
-            </CarouselItem>
-
             {isLoading
               ? // Skeleton cards
                 Array(3)
                   .fill(0)
                   .map((_, index) => {
-                    const actualIndex = index + 1 // 빈 슬라이드 다음부터
-                    const totalSlides = 4 // 빈 슬라이드 포함
+                    const actualIndex = index
+                    const totalSlides = 3
                     const distance = Math.abs(current - actualIndex)
                     const wrappedDistance = Math.min(
                       distance,
@@ -105,8 +98,8 @@ export const DailyReports = () => {
                   })
               : // Real data
                 reports.map((report, index) => {
-                  const actualIndex = index + 1 // 빈 슬라이드 다음부터
-                  const totalSlides = reports.length + 1 // 빈 슬라이드 포함
+                  const actualIndex = index
+                  const totalSlides = reports.length
                   const distance = Math.abs(current - actualIndex)
 
                   // Handle loop wrapping
