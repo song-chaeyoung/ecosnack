@@ -12,35 +12,45 @@ export function CategoryFilter({
   selectedCategory,
   onCategoryChange,
 }: CategoryFilterProps) {
-
   const categories: Array<Category | 'all'> = [
     'all',
     ...apiCategories,
   ] as Array<Category | 'all'>
 
   return (
-    <div className="mb-2 sm:mb-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex sm:justify-center overflow-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth mr-2">
-      <div className="flex gap-2 sm:gap-3 min-w-max sm:min-w-0 sm:flex-wrap cursor-pointer">
-        {categories.map((category) => {
-          const isSelected = selectedCategory === category
-          const categoryInfo = CATEGORY_INFO[category]
+    <div className="mb-6 w-full border-b border-border/40">
+      <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 flex sm:justify-center scrollbar-hide [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-6 sm:gap-10 min-w-max sm:min-w-0 px-2 pb-px">
+          {categories.map((category) => {
+            const isSelected = selectedCategory === category
+            const categoryInfo = CATEGORY_INFO[category]
 
-          return (
-            <button
-              key={category}
-              onClick={() => onCategoryChange(category)}
-              className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium border cursor-pointer ${
-                isSelected
-                  ? 'bg-primary border-primary text-primary-foreground shadow-sm'
-                  : 'bg-card border-border text-muted-foreground hover:bg-secondary hover:text-foreground'
-              }`}
-              aria-pressed={isSelected}
-              aria-label={`${categoryInfo.name} 카테고리 ${isSelected ? '선택됨' : '선택'}`}
-            >
-              {categoryInfo.name}
-            </button>
-          )
-        })}
+            return (
+              <button
+                key={category}
+                onClick={() => onCategoryChange(category)}
+                className={`
+                  group relative py-3 text-[15px] cursor-pointer transition-all duration-300
+                  ${
+                    isSelected
+                      ? 'text-foreground font-bold'
+                      : 'text-muted-foreground font-medium hover:text-foreground/80'
+                  }
+                `}
+                aria-pressed={isSelected}
+                aria-label={categoryInfo.name}
+              >
+                <span className="relative z-10 px-1">{categoryInfo.name}</span>
+                {isSelected && (
+                  <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary rounded-t-full shadow-[0_-2px_6px_rgba(0,0,0,0.1)] animate-in fade-in zoom-in-50 duration-200" />
+                )}
+                {!isSelected && (
+                  <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-transparent group-hover:bg-border/50 transition-colors duration-300 rounded-t-full" />
+                )}
+              </button>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
