@@ -16,7 +16,7 @@ export function SearchFilters({
   onSearchChange,
   onRegionChange,
 }: SearchFiltersProps) {
-  const regions: Array<Region | 'all'> = ['all', 'KR', 'US']
+  const regions = Object.keys(REGION_INFO) as Array<Region | 'all'>
   const [inputValue, setInputValue] = useState(searchQuery)
 
   useEffect(() => {

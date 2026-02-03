@@ -12,10 +12,9 @@ export function CategoryFilter({
   selectedCategory,
   onCategoryChange,
 }: CategoryFilterProps) {
-  const categories: Array<Category | 'all'> = [
-    'all',
-    ...apiCategories,
-  ] as Array<Category | 'all'>
+  const categories = ['all', ...apiCategories].filter(
+    (c): c is Category | 'all' => c in CATEGORY_INFO,
+  )
 
   return (
     <div className="mb-4">
