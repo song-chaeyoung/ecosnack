@@ -5,7 +5,7 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
 const TanStackDevtools =
   process.env.NODE_ENV === 'production'
@@ -120,9 +120,15 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         `,
       },
       {
-        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946825662622426',
-        async: true,
-        crossOrigin: 'anonymous',
+        children: `
+          (function() {
+            const script = document.createElement('script');
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946825662622426';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            document.head.appendChild(script);
+          })();
+        `,
       },
     ],
   }),
@@ -152,27 +158,29 @@ function RootLayout() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const theme = useThemeStore((state) => state.theme)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
-    <ClerkProvider>
-      <PostHogProvider
-        apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
-        options={posthogOptions}
-      >
-        <html
-          lang="ko"
-          className={theme === 'dark' ? 'dark' : ''}
-          suppressHydrationWarning
-        >
-          <head>
-            <HeadContent />
-          </head>
-          <body
-            className="bg-background text-foreground"
-            suppressHydrationWarning
+    <html
+      lang="ko"
+      className={theme === 'dark' ? 'dark' : ''}
+      suppressHydrationWarning
+    >
+      <head>
+        <HeadContent />
+      </head>
+      <body className="bg-background text-foreground" suppressHydrationWarning>
+        <ClerkProvider>
+          <PostHogProvider
+            apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+            options={posthogOptions}
           >
             {children}
-            {typeof window !== 'undefined' && (
+            {isClient && (
               <Suspense fallback={null}>
                 <TanStackDevtools
                   config={{
@@ -187,10 +195,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 />
               </Suspense>
             )}
-            <Scripts />
-          </body>
-        </html>
-      </PostHogProvider>
-    </ClerkProvider>
+          </PostHogProvider>
+        </ClerkProvider>
+        <Scripts />
+      </body>
+    </html>
   )
 }
