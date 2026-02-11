@@ -18,7 +18,19 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
   const containerRef = useRef<HTMLSpanElement>(null)
 
   // text가 바뀔 때만 재계산
-  const parts = useMemo(() => text.split(GLOSSARY_REGEX), [text])
+  // const parts = useMemo(() => text.split(GLOSSARY_REGEX), [text])
+  const parts = useMemo(() => {
+    const seen = new Set<string>()
+    // matchAll로 매칭 위치를 찾고, 이미 본 용어는 스킵
+    // → 첫 번째만 하이라이트 대상으로 남김
+    return text.split(GLOSSARY_REGEX).map((part) => {
+      if (TERMS_SET.has(part) && !seen.has(part)) {
+        seen.add(part)
+        return part
+      }
+      return part
+    })
+  }, [text])
 
   const handleTermClick = (
     term: string,
