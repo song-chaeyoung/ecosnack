@@ -1,10 +1,19 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { GLOSSARY } from '@/lib/glossary'
 
-// 컴포넌트 외부에서 한 번만 생성
-const TERMS = Object.keys(GLOSSARY)
-const TERMS_SET = new Set(TERMS)
-const GLOSSARY_REGEX = new RegExp(`(${TERMS.join('|')})`, 'g')
+// 정규식 특수문자 이스케이프
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+// 용어를 길이 내림차순 정렬 (긴 단어 우선 매칭)
+const SORTED_TERMS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length)
+
+// 어절 시작에서만 매칭 (띄어쓰기/문장 시작 뒤)
+const GLOSSARY_REGEX = new RegExp(
+  `(?<=^|[\\s.,;:!?'"()\\[\\]{}])(${SORTED_TERMS.map(escapeRegex).join('|')})`,
+  'g',
+)
 
 interface GlossaryTextProps {
   text: string
@@ -17,19 +26,38 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
   const popoverRef = useRef<HTMLSpanElement>(null)
   const containerRef = useRef<HTMLSpanElement>(null)
 
-  // text가 바뀔 때만 재계산
-  // const parts = useMemo(() => text.split(GLOSSARY_REGEX), [text])
+  // 첫 등장만 하이라이트
   const parts = useMemo(() => {
+    const matches = Array.from(text.matchAll(GLOSSARY_REGEX))
     const seen = new Set<string>()
-    // matchAll로 매칭 위치를 찾고, 이미 본 용어는 스킵
-    // → 첫 번째만 하이라이트 대상으로 남김
-    return text.split(GLOSSARY_REGEX).map((part) => {
-      if (TERMS_SET.has(part) && !seen.has(part)) {
-        seen.add(part)
-        return part
+    const highlights: Array<{ pos: number; term: string }> = []
+
+    // 각 용어의 첫 등장만 수집
+    for (const match of matches) {
+      const term = match[1]
+      if (!seen.has(term)) {
+        seen.add(term)
+        highlights.push({ pos: match.index!, term })
       }
-      return part
-    })
+    }
+
+    // 텍스트 분할
+    const result: Array<{ isTerm: boolean; text: string }> = []
+    let lastPos = 0
+
+    for (const { pos, term } of highlights) {
+      if (pos > lastPos) {
+        result.push({ isTerm: false, text: text.slice(lastPos, pos) })
+      }
+      result.push({ isTerm: true, text: term })
+      lastPos = pos + term.length
+    }
+
+    if (lastPos < text.length) {
+      result.push({ isTerm: false, text: text.slice(lastPos) })
+    }
+
+    return result
   }, [text])
 
   const handleTermClick = (
@@ -71,19 +99,19 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
 
   return (
     <span ref={containerRef} className={`relative ${className ?? ''}`}>
-      {parts.map((part, index) => {
-        if (TERMS_SET.has(part)) {
+      {parts.map((part, i) => {
+        if (part.isTerm) {
           return (
             <span
-              key={index}
-              onClick={(e) => handleTermClick(part, e)}
+              key={i}
+              onClick={(e) => handleTermClick(part.text, e)}
               className="text-primary underline underline-offset-2 cursor-pointer hover:text-primary/80 transition-colors"
             >
-              {part}
+              {part.text}
             </span>
           )
         }
-        return <span key={index}>{part}</span>
+        return <span key={i}>{part.text}</span>
       })}
 
       {/* Popover */}
