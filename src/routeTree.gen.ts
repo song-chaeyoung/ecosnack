@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as NewsRouteImport } from './routes/news'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookmarksRouteImport } from './routes/bookmarks'
 import { Route as AboutRouteImport } from './routes/about'
@@ -27,6 +28,11 @@ const TermsRoute = TermsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/bookmarks': typeof BookmarksRoute
   '/contact': typeof ContactRoute
+  '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/bookmarks': typeof BookmarksRoute
   '/contact': typeof ContactRoute
+  '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/bookmarks': typeof BookmarksRoute
   '/contact': typeof ContactRoute
+  '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/bookmarks'
     | '/contact'
+    | '/news'
     | '/privacy'
     | '/terms'
     | '/article/$id'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/bookmarks'
     | '/contact'
+    | '/news'
     | '/privacy'
     | '/terms'
     | '/article/$id'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/bookmarks'
     | '/contact'
+    | '/news'
     | '/privacy'
     | '/terms'
     | '/article/$id'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BookmarksRoute: typeof BookmarksRoute
   ContactRoute: typeof ContactRoute
+  NewsRoute: typeof NewsRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   ArticleIdRoute: typeof ArticleIdRoute
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BookmarksRoute: BookmarksRoute,
   ContactRoute: ContactRoute,
+  NewsRoute: NewsRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   ArticleIdRoute: ArticleIdRoute,

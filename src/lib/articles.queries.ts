@@ -38,3 +38,16 @@ export const categoriesQueryOptions = queryOptions({
   queryFn: () => getCategories(),
   staleTime: 1000 * 60 * 60, // 1시간
 })
+
+// 메인 페이지용 최신 기사 조회 (단순 쿼리)
+export const latestArticlesQueryOptions = (limit: number = 9) =>
+  queryOptions({
+    queryKey: ['articles', 'latest', limit] as const,
+    queryFn: async () => {
+      const result = await getArticlesPaginated({
+        data: { limit },
+      })
+      return result.articles
+    },
+    staleTime: 1000 * 60 * 5, // 5분
+  })
