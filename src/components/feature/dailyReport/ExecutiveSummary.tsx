@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { GlossaryText } from '../article/GlossaryText'
 
 interface ExecutiveSummaryProps {
   executiveSummary: {
@@ -58,7 +57,7 @@ export function ExecutiveSummary({ executiveSummary }: ExecutiveSummaryProps) {
         />
         <p className="text-responsive-base text-foreground leading-relaxed mb-6">
           {/* {executiveSummary.overview} */}
-          <GlossaryText text={executiveSummary.overview} />
+          {executiveSummary.overview}
         </p>
 
         {/* Highlights */}

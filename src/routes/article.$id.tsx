@@ -17,7 +17,6 @@ import ArticleNotFound from '@/components/feature/article/ArticleNotFound'
 import { useEffect } from 'react'
 import { getAuthStatus } from '@/lib/auth.middleware'
 import { LoginRequiredOverlay } from '@/components/feature/article/LoginRequiredOverlay'
-import { GlossaryText } from '@/components/feature/article/GlossaryText'
 
 export const Route = createFileRoute('/article/$id')({
   // SSR 시점에 인증 상태 확인
@@ -27,11 +26,11 @@ export const Route = createFileRoute('/article/$id')({
   },
   loader: async ({ params }) => {
     const article = await getArticleById({ data: Number(params.id) })
-    
+
     if (!article) {
       throw new Error('존재하지 않는 기사입니다')
     }
-    
+
     return { article }
   },
   head: ({ loaderData }) => {
@@ -127,8 +126,6 @@ function ArticleDetailPage() {
     window.scrollTo(0, 0)
   }, [])
 
-
-
   return (
     <div className="bg-background min-h-screen flex flex-col">
       {/* Article Content */}
@@ -153,7 +150,7 @@ function ArticleDetailPage() {
           {/* Main Description */}
           {article.description && (
             <p className="text-foreground text-responsive-base leading-relaxed">
-              <GlossaryText text={article.description} />
+              {article.description}
             </p>
           )}
           {/* Original Link */}
@@ -184,7 +181,7 @@ function ArticleDetailPage() {
                   </h3>
                 </div>
                 <p className="text-foreground leading-relaxed text-responsive-base">
-                  <GlossaryText text={article.soWhat.main_point} />
+                  {article.soWhat.main_point}
                 </p>
               </div>
 
@@ -199,7 +196,7 @@ function ArticleDetailPage() {
                     시장 시그널
                   </h4>
                   <p className="text-muted-foreground leading-relaxed text-responsive-sm">
-                    <GlossaryText text={article.soWhat.market_signal} />
+                    {article.soWhat.market_signal}
                   </p>
                 </div>
 
