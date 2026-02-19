@@ -6,7 +6,7 @@ import {
   UserButton,
 } from '@clerk/tanstack-react-start'
 import { dark } from '@clerk/themes'
-import { X, Bookmark, Rss, ChevronRight } from 'lucide-react'
+import { X, Bookmark, Rss, ChevronRight, FileText } from 'lucide-react'
 import { useUIStore } from '@/stores/uiStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { ThemeToggle } from './ThemeToggle'
@@ -118,6 +118,28 @@ export function Sidebar() {
             </Link>
           </div>
           <SignedIn>
+            <div className="space-y-1">
+              <h3 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                나의 리포트
+              </h3>
+              <Link
+                to="/my-report/$date"
+                params={{ date: new Date().toISOString().split('T')[0] }}
+                onClick={closeSidebar}
+                className={`
+                  flex items-center gap-3 px-4 py-2 rounded-full transition-colors text-sm font-medium
+                  ${
+                    currentPath.startsWith('/my-report')
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                  }
+                `}
+              >
+                <FileText className="w-5 h-5 shrink-0" />
+                <span>맞춤 리포트</span>
+                <ChevronRight className="w-4 h-4 ml-auto" />
+              </Link>
+            </div>
             <div className="space-y-1">
               <h3 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 북마크
