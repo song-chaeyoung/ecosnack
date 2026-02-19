@@ -17,6 +17,7 @@ import ArticleNotFound from '@/components/feature/article/ArticleNotFound'
 import { useEffect } from 'react'
 import { getAuthStatus } from '@/lib/auth.middleware'
 import { LoginRequiredOverlay } from '@/components/feature/article/LoginRequiredOverlay'
+import { GlossaryText } from '@/components/feature/article/GlossaryText'
 
 export const Route = createFileRoute('/article/$id')({
   // SSR 시점에 인증 상태 확인
@@ -152,7 +153,7 @@ function ArticleDetailPage() {
           {/* Main Description */}
           {article.description && (
             <p className="text-foreground text-responsive-base leading-relaxed">
-              {article.description}
+              <GlossaryText text={article.description} />
             </p>
           )}
           {/* Original Link */}
@@ -183,7 +184,7 @@ function ArticleDetailPage() {
                   </h3>
                 </div>
                 <p className="text-foreground leading-relaxed text-responsive-base">
-                  {article.soWhat.main_point}
+                  <GlossaryText text={article.soWhat.main_point} />
                 </p>
               </div>
 
@@ -198,7 +199,7 @@ function ArticleDetailPage() {
                     시장 시그널
                   </h4>
                   <p className="text-muted-foreground leading-relaxed text-responsive-sm">
-                    {article.soWhat.market_signal}
+                    <GlossaryText text={article.soWhat.market_signal} />
                   </p>
                 </div>
 
