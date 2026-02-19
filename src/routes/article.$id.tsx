@@ -26,11 +26,11 @@ export const Route = createFileRoute('/article/$id')({
   },
   loader: async ({ params }) => {
     const article = await getArticleById({ data: Number(params.id) })
-    
+
     if (!article) {
       throw new Error('존재하지 않는 기사입니다')
     }
-    
+
     return { article }
   },
   head: ({ loaderData }) => {
@@ -125,8 +125,6 @@ function ArticleDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-
 
   return (
     <div className="bg-background min-h-screen flex flex-col">

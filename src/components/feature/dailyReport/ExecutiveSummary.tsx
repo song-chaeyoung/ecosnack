@@ -56,6 +56,7 @@ export function ExecutiveSummary({ executiveSummary }: ExecutiveSummaryProps) {
           className={`h-1 w-24 mb-6 ${getSentimentUnderline(executiveSummary.sentiment.overall)}`}
         />
         <p className="text-responsive-base text-foreground leading-relaxed mb-6">
+          {/* {executiveSummary.overview} */}
           {executiveSummary.overview}
         </p>
 
