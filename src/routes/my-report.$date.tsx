@@ -22,17 +22,17 @@ export const Route = createFileRoute('/my-report/$date')({
     const { isAuthenticated } = await getAuthStatus()
     return { isAuthenticated }
   },
-  loader: async ({ params, context }) => {
-    if (!context.isAuthenticated) {
-      return { report: null, articles: [] }
-    }
-
+  loader: async ({ params }) => {
+    // 서버 함수는 항상 서버에서 실행되므로 auth()가 정상 동작
+    // 클라이언트 사이드 네비게이션에서도 서버 함수 호출됨
     const result = await getPersonalizedReportWithArticles({
       data: params.date,
     })
 
     if (!result) {
-      throw new Error('해당 날짜의 맞춤 리포트를 찾을 수 없습니다')
+      // 인증되지 않았거나 리포트가 없는 경우
+      // 컴포넌트에서 각각 처리
+      return { report: null, articles: [] }
     }
 
     return result
