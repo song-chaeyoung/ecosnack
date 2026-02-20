@@ -1,4 +1,5 @@
 import type { PreferenceSnapshot as PreferenceSnapshotType } from '@/db/schema'
+import { CATEGORY_INFO } from '@/lib/const'
 
 interface PreferenceSnapshotProps {
   snapshot: PreferenceSnapshotType
@@ -41,7 +42,7 @@ export function PreferenceSnapshot({ snapshot }: PreferenceSnapshotProps) {
                   key={idx}
                   className="inline-flex items-center gap-1 px-2.5 py-1 bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 rounded-md text-xs font-medium"
                 >
-                  {cat.category}
+                  {CATEGORY_INFO[cat.category as keyof typeof CATEGORY_INFO]?.name ?? cat.category}
                   <span className="text-violet-400 dark:text-violet-500">
                     ({Math.round(cat.weight * 100)}%)
                   </span>
