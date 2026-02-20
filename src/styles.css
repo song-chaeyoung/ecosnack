@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import '@fontsource-variable/outfit';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -100,6 +101,7 @@
     'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
     'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
     'Malgun Gothic', sans-serif;
+  --font-display: 'Outfit Variable', 'Outfit', sans-serif;
   --font-serif: 'Playfair Display', serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -204,4 +206,63 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+}
+
+/* Custom Animations for Hero Section */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes float-delayed {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 5s ease-in-out infinite;
+  animation-delay: 1s; /* Slight delay to desync from the main float */
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
 }

@@ -62,3 +62,31 @@ export {
   type DailyReport,
   type NewDailyReport,
 } from './daily-reports'
+
+// User Preferences
+export {
+  // Zod 스키마
+  CategoryWeightSchema,
+  UserPreferencesDataSchema,
+  // 타입
+  type CategoryWeight,
+  type UserPreferencesData,
+  // 테이블
+  userPreferences,
+  type UserPreference,
+  type NewUserPreference,
+} from './user-preferences'
+
+// Personalized Daily Reports
+export {
+  // Zod 스키마
+  PreferenceSnapshotSchema,
+  PersonalizedReportDataSchema,
+  // 타입
+  type PreferenceSnapshot,
+  type PersonalizedReportData,
+  // 테이블
+  personalizedDailyReports,
+  type PersonalizedDailyReport,
+  type NewPersonalizedDailyReport,
+} from './personalized-reports'

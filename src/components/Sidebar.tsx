@@ -6,7 +6,7 @@ import {
   UserButton,
 } from '@clerk/tanstack-react-start'
 import { dark } from '@clerk/themes'
-import { X, Bookmark, ChevronRight } from 'lucide-react'
+import { X, Bookmark, Rss, ChevronRight, FileText } from 'lucide-react'
 import { useUIStore } from '@/stores/uiStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { ThemeToggle } from './ThemeToggle'
@@ -94,9 +94,51 @@ export function Sidebar() {
           </p>
         </div>
 
-        {/* 북마크 섹션 */}
-        <nav className="flex-1 overflow-y-auto p-4">
+        {/* 네비게이션 */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="space-y-1">
+            <h3 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              메뉴
+            </h3>
+            <Link
+              to="/news"
+              onClick={closeSidebar}
+              className={`
+                flex items-center gap-3 px-4 py-2 rounded-full transition-colors text-sm font-medium
+                ${
+                  currentPath === '/news'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                }
+              `}
+            >
+              <Rss className="w-5 h-5 shrink-0" />
+              <span>뉴스</span>
+              <ChevronRight className="w-4 h-4 ml-auto" />
+            </Link>
+          </div>
           <SignedIn>
+            <div className="space-y-1">
+              <h3 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                나의 리포트
+              </h3>
+              <Link
+                to="/my-report"
+                onClick={closeSidebar}
+                className={`
+                  flex items-center gap-3 px-4 py-2 rounded-full transition-colors text-sm font-medium
+                  ${
+                    currentPath.startsWith('/my-report')
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                  }
+                `}
+              >
+                <FileText className="w-5 h-5 shrink-0" />
+                <span>맞춤 리포트</span>
+                <ChevronRight className="w-4 h-4 ml-auto" />
+              </Link>
+            </div>
             <div className="space-y-1">
               <h3 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 북마크
