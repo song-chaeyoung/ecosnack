@@ -14,7 +14,6 @@ import { PreferenceSnapshot } from '@/components/feature/personalizedReport/Pref
 import PersonalizedReportNotFound from '@/components/feature/personalizedReport/PersonalizedReportNotFound'
 import { LoginRequired } from '@/components/LoginRequired'
 import { getPersonalizedReportWithArticles } from '@/lib/personalized-reports.api'
-import { getPageMeta, SITE_CONFIG, getBreadcrumbJsonLd } from '@/lib/seo'
 import { getAuthStatus } from '@/lib/auth.middleware'
 import { useEffect, useMemo } from 'react'
 
@@ -37,65 +36,6 @@ export const Route = createFileRoute('/my-report/$date')({
     }
 
     return result
-  },
-  head: ({ params }) => {
-    const reportPath = `/my-report/${params.date}`
-    const title = `${params.date} 나의 맞춤 리포트`
-    const description = '나의 관심 분야에 맞춰 분석된 개인화 경제 리포트입니다.'
-
-    return {
-      meta: getPageMeta({
-        title,
-        description,
-        path: reportPath,
-        type: 'article',
-        keywords: ['맞춤리포트', '개인화리포트', '경제리포트', '시장분석'],
-      }),
-      links: [
-        {
-          rel: 'canonical',
-          href: `${SITE_CONFIG.url}${reportPath}`,
-        },
-      ],
-      scripts: [
-        {
-          type: 'application/ld+json',
-          children: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Report',
-            headline: title,
-            description,
-            author: {
-              '@type': 'Organization',
-              name: SITE_CONFIG.name,
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: SITE_CONFIG.name,
-              logo: {
-                '@type': 'ImageObject',
-                url: `${SITE_CONFIG.url}/logo.png`,
-              },
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': `${SITE_CONFIG.url}${reportPath}`,
-            },
-            inLanguage: 'ko-KR',
-          }),
-        },
-        {
-          type: 'application/ld+json',
-          children: JSON.stringify(
-            getBreadcrumbJsonLd([
-              { name: '홈', url: '/' },
-              { name: '맞춤 리포트', url: '/my-reports' },
-              { name: params.date, url: reportPath },
-            ]),
-          ),
-        },
-      ],
-    }
   },
   errorComponent: PersonalizedReportErrorComponent,
   component: PersonalizedReportPage,
