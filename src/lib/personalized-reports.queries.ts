@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
 import {
   getPersonalizedReports,
   getPersonalizedReportByDate,
@@ -47,4 +47,25 @@ export const latestPersonalizedReportQueryOptions = queryOptions({
   queryKey: ['personalizedReports', 'latest'] as const,
   queryFn: () => getLatestPersonalizedReport(),
   staleTime: 1000 * 60 * 5, // 5분
+})
+
+// 무한스크롤용 개인화 리포트 목록 조회
+export const personalizedReportsInfiniteQueryOptions = infiniteQueryOptions({
+  queryKey: ['personalizedReports', 'infinite'] as const,
+  queryFn: async ({ pageParam }) => {
+    return getPersonalizedReports({
+      data: {
+        limit: 10,
+        offset: pageParam,
+      },
+    })
+  },
+  initialPageParam: 0,
+  getNextPageParam: (lastPage, allPages) => {
+    const totalFetched = allPages.reduce(
+      (sum, page) => sum + page.reports.length,
+      0,
+    )
+    return lastPage.hasMore ? totalFetched : undefined
+  },
 })
