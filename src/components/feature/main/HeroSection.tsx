@@ -56,11 +56,7 @@ export function HeroSection() {
 
             {/* CTA 버튼 */}
             <div className="flex gap-3 sm:gap-4 justify-center lg:justify-start items-center animate-fade-in-up delay-200 opacity-0 fill-mode-forwards w-full sm:w-auto">
-              <Link
-                to="/"
-                onClick={handleNewsClick}
-                className="w-full sm:w-auto"
-              >
+              <Link to="/news" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 px-6 py-4 sm:px-8 sm:py-6 h-auto text-base sm:text-lg font-medium shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all rounded-xl"
