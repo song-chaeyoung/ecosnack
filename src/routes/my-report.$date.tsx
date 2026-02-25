@@ -16,6 +16,7 @@ import { LoginRequired } from '@/components/LoginRequired'
 import { getPersonalizedReportWithArticles } from '@/lib/personalized-reports.api'
 import { getAuthStatus } from '@/lib/auth.middleware'
 import { useEffect, useMemo } from 'react'
+import { GlossaryText } from '@/components/feature/article/GlossaryText'
 
 export const Route = createFileRoute('/my-report/$date')({
   beforeLoad: async () => {
@@ -187,7 +188,7 @@ function PersonalizedReportPage() {
               </h2>
             </div>
             <p className="text-muted-foreground text-responsive-base mb-6 leading-relaxed">
-              {report.marketOverview.summary}
+              <GlossaryText text={report.marketOverview.summary} />
             </p>
 
             {/* Sections */}
@@ -223,7 +224,7 @@ function PersonalizedReportPage() {
                 📊 시장 전망
               </h3>
               <p className="text-muted-foreground text-responsive-sm">
-                {report.marketOverview.outlook}
+                <GlossaryText text={report.marketOverview.outlook} />
               </p>
             </div>
 
@@ -237,7 +238,7 @@ function PersonalizedReportPage() {
                   {report.marketOverview.watchList.map((item, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1.5 bg-card text-card-foreground rounded-lg text-responsive-sm font-medium border transition-all hover:scale-105"
+                      className="px-3 py-1.5 bg-card text-card-foreground rounded-lg text-responsive-sm font-medium border"
                     >
                       {item}
                     </span>
