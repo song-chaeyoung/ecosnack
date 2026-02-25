@@ -1,19 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
-import { GLOSSARY } from '@/lib/glossary'
-
-// 정규식 특수문자 이스케이프
-function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-// 용어를 길이 내림차순 정렬 (긴 단어 우선 매칭)
-const SORTED_TERMS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length)
-
-// 어절 시작에서만 매칭 (띄어쓰기/문장 시작 뒤)
-const GLOSSARY_REGEX = new RegExp(
-  `(?<=^|[\\s.,;:!?'"()\\[\\]{}])(${SORTED_TERMS.map(escapeRegex).join('|')})`,
-  'g',
-)
+import { EconomicTerms, ECONOMIC_TERMS_REGEX } from '@/constants/economic-terms'
 
 interface GlossaryTextProps {
   text: string
@@ -28,7 +14,7 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
 
   // 첫 등장만 하이라이트
   const parts = useMemo(() => {
-    const matches = Array.from(text.matchAll(GLOSSARY_REGEX))
+    const matches = Array.from(text.matchAll(ECONOMIC_TERMS_REGEX))
     const seen = new Set<string>()
     const highlights: Array<{ pos: number; term: string }> = []
 
@@ -126,7 +112,7 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
         >
           <span className="font-semibold text-sm mb-1 block">{activeTerm}</span>
           <span className="text-xs text-muted-foreground leading-relaxed block">
-            {GLOSSARY[activeTerm]}
+            {EconomicTerms[activeTerm as keyof typeof EconomicTerms]}
           </span>
         </span>
       )}
