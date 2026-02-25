@@ -16,7 +16,7 @@ import { LoginRequired } from '@/components/LoginRequired'
 import { getPersonalizedReportWithArticles } from '@/lib/personalized-reports.api'
 import { getAuthStatus } from '@/lib/auth.middleware'
 import { useEffect, useMemo } from 'react'
-import { GlossaryText } from '@/components/feature/article/GlossaryText'
+import { EconomicTermsText } from '@/components/feature/article/EconomicTermsText'
 
 export const Route = createFileRoute('/my-report/$date')({
   beforeLoad: async () => {
@@ -188,7 +188,7 @@ function PersonalizedReportPage() {
               </h2>
             </div>
             <p className="text-muted-foreground text-responsive-base mb-6 leading-relaxed">
-              <GlossaryText text={report.marketOverview.summary} />
+              <EconomicTermsText text={report.marketOverview.summary} />
             </p>
 
             {/* Sections */}
@@ -224,7 +224,7 @@ function PersonalizedReportPage() {
                 📊 시장 전망
               </h3>
               <p className="text-muted-foreground text-responsive-sm">
-                <GlossaryText text={report.marketOverview.outlook} />
+                <EconomicTermsText text={report.marketOverview.outlook} />
               </p>
             </div>
 

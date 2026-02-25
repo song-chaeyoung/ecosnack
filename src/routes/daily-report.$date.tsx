@@ -18,7 +18,7 @@ import {
   getBreadcrumbJsonLd,
   truncateDescription,
 } from '../lib/seo'
-import { GlossaryText } from '@/components/feature/article/GlossaryText'
+import { EconomicTermsText } from '@/components/feature/article/EconomicTermsText'
 
 export const Route = createFileRoute('/daily-report/$date')({
   loader: async ({ params }) => {
@@ -249,7 +249,7 @@ function DailyReportDetailPage() {
               </h2>
             </div>
             <p className="text-muted-foreground text-responsive-base mb-6 leading-relaxed">
-              <GlossaryText text={report.marketOverview.summary} />
+              <EconomicTermsText text={report.marketOverview.summary} />
             </p>
 
             {/* Sections */}
@@ -260,7 +260,7 @@ function DailyReportDetailPage() {
                     {section.title}
                   </h3>
                   <p className="text-muted-foreground text-responsive-base mb-3">
-                    <GlossaryText text={section.content} />
+                    <EconomicTermsText text={section.content} />
                   </p>
 
                   {/* Key Data */}
@@ -286,7 +286,7 @@ function DailyReportDetailPage() {
                 📊 시장 전망
               </h3>
               <p className="text-muted-foreground text-responsive-sm">
-                <GlossaryText text={report.marketOverview.outlook} />
+                <EconomicTermsText text={report.marketOverview.outlook} />
               </p>
             </div>
 

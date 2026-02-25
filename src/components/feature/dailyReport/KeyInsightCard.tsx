@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { Impact, ImpactBadge } from './ImpactBadge'
 import { TimeHorizon, TimeHorizonBadge } from './TimeHorizonBadge'
-import { GlossaryText } from '../article/GlossaryText'
+import { EconomicTermsText } from '../article/EconomicTermsText'
 
 interface KeyInsight {
   title: string
@@ -35,7 +35,7 @@ export function KeyInsightCard({ insight }: KeyInsightCardProps) {
       </div>
 
       <p className="text-responsive-sm text-muted-foreground mb-4">
-        <GlossaryText text={insight.summary} />
+        <EconomicTermsText text={insight.summary} />
       </p>
 
       <div className="mb-4">
@@ -43,7 +43,7 @@ export function KeyInsightCard({ insight }: KeyInsightCardProps) {
           분석
         </h4>
         <p className="text-responsive-sm text-muted-foreground">
-          <GlossaryText text={insight.analysis} />
+          <EconomicTermsText text={insight.analysis} />
         </p>
       </div>
 
@@ -54,7 +54,7 @@ export function KeyInsightCard({ insight }: KeyInsightCardProps) {
             💼 투자자
           </h4>
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <GlossaryText text={insight.implications.investors} />
+            <EconomicTermsText text={insight.implications.investors} />
           </p>
         </div>
         <div className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
@@ -62,7 +62,7 @@ export function KeyInsightCard({ insight }: KeyInsightCardProps) {
             👷 근로자
           </h4>
           <p className="text-sm text-amber-700 dark:text-amber-400">
-            <GlossaryText text={insight.implications.workers} />
+            <EconomicTermsText text={insight.implications.workers} />
           </p>
         </div>
         <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
@@ -70,7 +70,7 @@ export function KeyInsightCard({ insight }: KeyInsightCardProps) {
             🛒 소비자
           </h4>
           <p className="text-sm text-emerald-700 dark:text-emerald-400">
-            <GlossaryText text={insight.implications.consumers} />
+            <EconomicTermsText text={insight.implications.consumers} />
           </p>
         </div>
       </div>
