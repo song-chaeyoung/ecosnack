@@ -94,7 +94,7 @@ export interface FileRoutesByFullPath {
   '/article/$id': typeof ArticleIdRoute
   '/daily-report/$date': typeof DailyReportDateRoute
   '/my-report/$date': typeof MyReportDateRoute
-  '/my-report': typeof MyReportIndexRoute
+  '/my-report/': typeof MyReportIndexRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
 }
 export interface FileRoutesByTo {
@@ -139,7 +139,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/daily-report/$date'
     | '/my-report/$date'
-    | '/my-report'
+    | '/my-report/'
     | '/api/webhooks/clerk'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -240,7 +240,7 @@ declare module '@tanstack/react-router' {
     '/my-report/': {
       id: '/my-report/'
       path: '/my-report'
-      fullPath: '/my-report'
+      fullPath: '/my-report/'
       preLoaderRoute: typeof MyReportIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
