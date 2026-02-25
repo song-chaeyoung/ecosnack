@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { dailyReportsQueryOptions } from '@/lib/daily-reports.queries'
 import { Link } from '@tanstack/react-router'
 import { SentimentBadge } from '@/components/feature/dailyReport/SentimentBadge'
+import { ChevronRight } from 'lucide-react'
 
 export const DailyReports = () => {
   const [api, setApi] = useState<CarouselApi>()
@@ -37,10 +38,17 @@ export const DailyReports = () => {
     <section className="w-full py-4 lg:py-8 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-3 sm:mb-5">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="flex items-center justify-between mb-3 sm:mb-5">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
             데일리 리포트
           </h2>
+          <Link
+            to="/daily-report/shorts"
+            className="flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+          >
+            숏폼으로 보기
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* Carousel */}
