@@ -16,7 +16,6 @@ export function EconomicTermsText({ text, className }: EconomicTermsTextProps) {
 
   // 첫 등장만 하이라이트
   const parts = useMemo(() => {
-    const start = performance.now()
     const matches = Array.from(text.matchAll(ECONOMIC_TERMS_REGEX))
     const seen = new Set<string>()
     const highlights: Array<{ pos: number; term: string }> = []
@@ -43,9 +42,6 @@ export function EconomicTermsText({ text, className }: EconomicTermsTextProps) {
     if (lastPos < text.length) {
       result.push({ isTerm: false, text: text.slice(lastPos) })
     }
-    console.log(
-      `[parse] ${(performance.now() - start).toFixed(2)}ms / textLen: ${text.length}`,
-    )
     return result
   }, [text])
 
@@ -71,7 +67,9 @@ export function EconomicTermsText({ text, className }: EconomicTermsTextProps) {
                   align="start"
                   className="w-64 p-3 gap-1"
                 >
-                  <span className="font-semibold text-sm block">{part.text}</span>
+                  <span className="font-semibold text-sm block">
+                    {part.text}
+                  </span>
                   <span className="text-xs text-muted-foreground leading-relaxed block">
                     {EconomicTerms[part.text as keyof typeof EconomicTerms]}
                   </span>
