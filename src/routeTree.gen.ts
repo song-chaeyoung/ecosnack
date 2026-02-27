@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -18,7 +19,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MyReportIndexRouteImport } from './routes/my-report.index'
 import { Route as MyReportDateRouteImport } from './routes/my-report.$date'
-import { Route as DailyReportShortsRouteImport } from './routes/daily-report.shorts'
 import { Route as DailyReportDateRouteImport } from './routes/daily-report.$date'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as ApiWebhooksClerkRouteImport } from './routes/api.webhooks.clerk'
@@ -26,6 +26,11 @@ import { Route as ApiWebhooksClerkRouteImport } from './routes/api.webhooks.cler
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShortsRoute = ShortsRouteImport.update({
+  id: '/shorts',
+  path: '/shorts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -68,11 +73,6 @@ const MyReportDateRoute = MyReportDateRouteImport.update({
   path: '/my-report/$date',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DailyReportShortsRoute = DailyReportShortsRouteImport.update({
-  id: '/daily-report/shorts',
-  path: '/daily-report/shorts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DailyReportDateRoute = DailyReportDateRouteImport.update({
   id: '/daily-report/$date',
   path: '/daily-report/$date',
@@ -96,10 +96,10 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
+  '/shorts': typeof ShortsRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
   '/daily-report/$date': typeof DailyReportDateRoute
-  '/daily-report/shorts': typeof DailyReportShortsRoute
   '/my-report/$date': typeof MyReportDateRoute
   '/my-report/': typeof MyReportIndexRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -111,10 +111,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
+  '/shorts': typeof ShortsRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
   '/daily-report/$date': typeof DailyReportDateRoute
-  '/daily-report/shorts': typeof DailyReportShortsRoute
   '/my-report/$date': typeof MyReportDateRoute
   '/my-report': typeof MyReportIndexRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -127,10 +127,10 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
+  '/shorts': typeof ShortsRoute
   '/terms': typeof TermsRoute
   '/article/$id': typeof ArticleIdRoute
   '/daily-report/$date': typeof DailyReportDateRoute
-  '/daily-report/shorts': typeof DailyReportShortsRoute
   '/my-report/$date': typeof MyReportDateRoute
   '/my-report/': typeof MyReportIndexRoute
   '/api/webhooks/clerk': typeof ApiWebhooksClerkRoute
@@ -144,10 +144,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/news'
     | '/privacy'
+    | '/shorts'
     | '/terms'
     | '/article/$id'
     | '/daily-report/$date'
-    | '/daily-report/shorts'
     | '/my-report/$date'
     | '/my-report/'
     | '/api/webhooks/clerk'
@@ -159,10 +159,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/news'
     | '/privacy'
+    | '/shorts'
     | '/terms'
     | '/article/$id'
     | '/daily-report/$date'
-    | '/daily-report/shorts'
     | '/my-report/$date'
     | '/my-report'
     | '/api/webhooks/clerk'
@@ -174,10 +174,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/news'
     | '/privacy'
+    | '/shorts'
     | '/terms'
     | '/article/$id'
     | '/daily-report/$date'
-    | '/daily-report/shorts'
     | '/my-report/$date'
     | '/my-report/'
     | '/api/webhooks/clerk'
@@ -190,10 +190,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   NewsRoute: typeof NewsRoute
   PrivacyRoute: typeof PrivacyRoute
+  ShortsRoute: typeof ShortsRoute
   TermsRoute: typeof TermsRoute
   ArticleIdRoute: typeof ArticleIdRoute
   DailyReportDateRoute: typeof DailyReportDateRoute
-  DailyReportShortsRoute: typeof DailyReportShortsRoute
   MyReportDateRoute: typeof MyReportDateRoute
   MyReportIndexRoute: typeof MyReportIndexRoute
   ApiWebhooksClerkRoute: typeof ApiWebhooksClerkRoute
@@ -206,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shorts': {
+      id: '/shorts'
+      path: '/shorts'
+      fullPath: '/shorts'
+      preLoaderRoute: typeof ShortsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -264,13 +271,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyReportDateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/daily-report/shorts': {
-      id: '/daily-report/shorts'
-      path: '/daily-report/shorts'
-      fullPath: '/daily-report/shorts'
-      preLoaderRoute: typeof DailyReportShortsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/daily-report/$date': {
       id: '/daily-report/$date'
       path: '/daily-report/$date'
@@ -302,10 +302,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   NewsRoute: NewsRoute,
   PrivacyRoute: PrivacyRoute,
+  ShortsRoute: ShortsRoute,
   TermsRoute: TermsRoute,
   ArticleIdRoute: ArticleIdRoute,
   DailyReportDateRoute: DailyReportDateRoute,
-  DailyReportShortsRoute: DailyReportShortsRoute,
   MyReportDateRoute: MyReportDateRoute,
   MyReportIndexRoute: MyReportIndexRoute,
   ApiWebhooksClerkRoute: ApiWebhooksClerkRoute,

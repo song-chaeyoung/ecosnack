@@ -6,7 +6,7 @@ import { dailyReportsQueryOptions } from '@/lib/daily-reports.queries'
 import { ShortsCard } from '@/components/feature/dailyReport/ShortsCard'
 import { SITE_CONFIG, getPageMeta } from '../lib/seo'
 
-export const Route = createFileRoute('/daily-report/shorts')({
+export const Route = createFileRoute('/shorts')({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       dailyReportsQueryOptions({ limit: 10 }),
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/daily-report/shorts')({
     meta: getPageMeta({
       title: `데일리 리포트 숏폼 | ${SITE_CONFIG.title}`,
       description: '풀스크린 스와이프로 보는 경제 데일리 리포트',
-      path: '/daily-report/shorts',
+      path: '/shorts',
     }),
   }),
   component: DailyShortsPage,

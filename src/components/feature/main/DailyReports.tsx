@@ -43,7 +43,7 @@ export const DailyReports = () => {
             데일리 리포트
           </h2>
           <Link
-            to="/daily-report/shorts"
+            to="/shorts"
             className="flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
           >
             숏폼으로 보기
