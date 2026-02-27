@@ -63,15 +63,6 @@ function DailyShortsPage() {
 
   return (
     <div className="fixed inset-0 z-[60] bg-black select-none">
-      {/* Close button - top left */}
-      {/* <Link
-        to="/"
-        className="absolute top-4 left-4 z-50 w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/25 transition-colors"
-        aria-label="닫기"
-      >
-        <X className="w-5 h-5" />
-      </Link> */}
-
       {/* Snap scroll container */}
       <div
         className="h-full overflow-y-scroll snap-y snap-mandatory [&::-webkit-scrollbar]:hidden"
