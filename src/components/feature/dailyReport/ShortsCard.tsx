@@ -1,11 +1,14 @@
 import { Link } from '@tanstack/react-router'
 import { ChevronRight, X } from 'lucide-react'
+import { useState } from 'react'
 import { SentimentBadge } from './SentimentBadge'
 import type { DailyReport } from '@/db/schema/daily-reports'
 
 interface ShortsCardProps {
   report: DailyReport
   isActive: boolean
+  isBookmarked?: boolean
+  onDoubleClick?: () => void
 }
 
 function sentimentGlow(sentiment: string) {
@@ -18,19 +21,6 @@ function sentimentGlow(sentiment: string) {
       return 'bg-amber-500'
     default:
       return 'bg-blue-500'
-  }
-}
-
-function sentimentTextGradient(sentiment: string) {
-  switch (sentiment) {
-    case 'positive':
-      return 'bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent'
-    case 'negative':
-      return 'bg-gradient-to-r from-red-300 to-rose-200 bg-clip-text text-transparent'
-    case 'mixed':
-      return 'bg-gradient-to-r from-amber-300 to-yellow-200 bg-clip-text text-transparent'
-    default:
-      return 'bg-gradient-to-r from-blue-300 to-cyan-200 bg-clip-text text-transparent'
   }
 }
 
@@ -47,18 +37,41 @@ function sentimentAccent(sentiment: string) {
   }
 }
 
-export function ShortsCard({ report, isActive }: ShortsCardProps) {
+export function ShortsCard({
+  report,
+  isActive,
+  onDoubleClick,
+}: ShortsCardProps) {
   const sentiment = report.executiveSummary.sentiment.overall
   const firstInsight = report.keyInsights[0]
+  const [showHeart, setShowHeart] = useState(false)
+
+  function handleDoubleClick() {
+    setShowHeart(true)
+    setTimeout(() => setShowHeart(false), 700)
+    onDoubleClick?.()
+  }
 
   return (
     <div
       className={`h-full w-full bg-zinc-950 flex flex-col transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-50'} overflow-hidden relative`}
+      onDoubleClick={handleDoubleClick}
     >
-      {/* Sentiment glow - top center */}
+      {/* Sentiment glow - top center, zoom-out on active */}
       <div
-        className={`absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-72 ${sentimentGlow(sentiment)} opacity-30 blur-3xl pointer-events-none`}
+        className={`absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-72 ${sentimentGlow(sentiment)} opacity-30 blur-3xl pointer-events-none transition-transform duration-700 ${isActive ? 'scale-100' : 'scale-[1.05]'}`}
       />
+
+      {/* Heart animation overlay */}
+      {showHeart && (
+        <div
+          className="absolute top-1/2 left-1/2 z-50 text-6xl animate-heart-burst pointer-events-none"
+          style={{ transform: 'translate(-50%, -50%)' }}
+          aria-hidden="true"
+        >
+          ❤️
+        </div>
+      )}
 
       {/* Header */}
       <div className="relative z-10 flex items-center justify-between px-6 pt-6 pb-2">
@@ -85,14 +98,13 @@ export function ShortsCard({ report, isActive }: ShortsCardProps) {
       {/* Main content */}
       <div className="relative z-10 flex-1 flex flex-col px-6 pt-2 pb-8 space-y-4 overflow-hidden">
         {/* Headline */}
-        <h2
-          className={`text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-white`}
-        >
+        <h2 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-white">
           {report.executiveSummary.headline}
         </h2>
 
         {/* Spacer */}
         <div className="flex-1" />
+
         {/* Overview */}
         <p className="text-sm text-white/85 line-clamp-4 leading-relaxed">
           {report.executiveSummary.overview}
@@ -133,6 +145,7 @@ export function ShortsCard({ report, isActive }: ShortsCardProps) {
             to="/daily-report/$date"
             params={{ date: report.reportDate }}
             className="flex items-center gap-1 text-xs text-white/55 hover:text-white transition-colors"
+            aria-label="전체 리포트 보기"
           >
             전체 보기
             <ChevronRight className="w-3 h-3" />
